@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -44,7 +45,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -56,6 +60,7 @@ public class FileComplaintsFrag extends Fragment {
     private FirebaseFirestore mDatabase;
     private Context context;
     private int chosenImage = 0;
+    private Map<Object,String> complaintMap = new HashMap<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,7 +107,8 @@ public class FileComplaintsFrag extends Fragment {
         binding.btnSubmitDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showViewersDialog();
+                //showViewersDialog();
+                uploadComplaintToFirestore();
             }
         });
 
@@ -117,6 +123,22 @@ public class FileComplaintsFrag extends Fragment {
 
         return v;
 
+    }
+
+    private void uploadComplaintToFirestore() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        complaintMap.put("title",binding.etComplaintTitle.getText().toString());
+        complaintMap.put("description",binding.etComplaintDesc.getText().toString());
+        mDatabase.collection("complaints")
+                .document(uid)
+                .collection(String.valueOf(System.currentTimeMillis()))
+                .document("").set(complaintMap)//TODO add doc path
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //show feedback when action completes
+                    }
+                });
     }
 
     private void showViewersDialog() {
@@ -253,6 +275,19 @@ public class FileComplaintsFrag extends Fragment {
             @Override
             public void onSuccess(Uri uri) {
                 String photoLink = uri.toString();
+
+                if (chosenImage == 1){
+                    complaintMap.put("imageUrl1",photoLink);
+                }
+                if (chosenImage == 2){
+                    complaintMap.put("imageUrl2",photoLink);
+                }
+                if (chosenImage == 3){
+                    complaintMap.put("imageUrl3",photoLink);
+                }
+                if (chosenImage == 4){
+                    complaintMap.put("imageUrl4",photoLink);
+                }
             }
         });
     }

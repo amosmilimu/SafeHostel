@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 <androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <LinearLayout
@@ -24,11 +23,12 @@
 
 
     <EditText
+        android:id="@+id/et_complaint_title"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/et_backdesign"
         android:hint="Title"
-        android:padding="10dp"
-        android:layout_height="wrap_content"/>
+        android:padding="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -115,16 +115,15 @@
     </LinearLayout>
 
 
-
-
     <EditText
+        android:id="@+id/et_complaint_desc"
         android:layout_width="match_parent"
-        android:background="@drawable/et_backdesign"
-        android:hint="Description"
+        android:layout_height="100dp"
         android:layout_marginTop="10dp"
-        android:inputType="textMultiLine"
+        android:background="@drawable/et_backdesign"
         android:fontFamily="@font/agaramondpro_regular"
-        android:layout_height="100dp"/>
+        android:hint="Description"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/btnSubmitDetails"
