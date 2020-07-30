@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp"
+    app:strokeColor = "#000FFF"
+    app:strokeWidth = "2dp"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="match_parent"
+            android:drawableEnd="@drawable/ic_baseline_search_24"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.Toolbar>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_viewers"
+        android:layout_marginTop="59dp"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"/>
+</com.google.android.material.card.MaterialCardView>
+</layout>

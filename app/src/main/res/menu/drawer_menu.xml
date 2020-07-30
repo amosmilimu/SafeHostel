@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+
+    <item android:title="">
+        <menu>
+
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/home_frag"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/add_complaint"
+            android:icon="@drawable/ic_add_circle_outline"
+            android:title="File complaint"/>
+
+        <item
+            android:id="@+id/my_complaints"
+            android:icon="@drawable/ic_assignment_turned"
+            android:title="My Complaints" />
+
+        <item
+            android:id="@+id/ratings"
+            android:icon="@drawable/ic_star_24"
+            android:title="Hostel Ratings" />
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_vector"
+            android:visible="false"
+            android:title="Settings" />
+
+        <item android:id="@+id/none"
+            android:title=""
+            android:visible="false"/>
+    </group>
+
+
+
+    <item android:title="">
+        <menu>
+
+            <item
+                android:id="@+id/log_out"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
+                android:title="Log out"/>
+
+        </menu>
+    </item>
+
+</menu>

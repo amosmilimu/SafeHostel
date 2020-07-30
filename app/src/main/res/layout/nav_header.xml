@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="176dp"
+    android:gravity="bottom"
+    android:id="@+id/layout_editProfile"
+    android:onClick="onLayoutEditAccountClick"
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Light"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_user"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/navHeaderName"
+                style="@style/all_headers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/agaramondpro_regular"
+                android:text="Martin" />
+
+            <TextView
+                android:id="@+id/tv_editprofile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit profile "
+                android:drawableRight="@drawable/ic_edit_black_24dp"
+                android:drawablePadding="20dp"
+                android:fontFamily="@font/agaramondpro_regular"
+                style="@style/all_headers"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "331928283641",
+    "firebase_url": "https://safehostel-e09bd.firebaseio.com",
+    "project_id": "safehostel-e09bd",
+    "storage_bucket": "safehostel-e09bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331928283641:android:61cf4655601602de9fb528",
+        "android_client_info": {
+          "package_name": "com.example.safehostel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "331928283641-jju20jn2ev9gei3o3npm5gklt0a241cs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.safehostel",
+            "certificate_hash": "5d7cbf71e3814d6fa83ce233e5a7db814b709cee"
+          }
+        },
+        {
+          "client_id": "331928283641-falsk5eouq4st6nlnl08ropjta2svibu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZoG7JTY6YiFNjzAwrEOC1XGg05s_ISKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "331928283641-falsk5eouq4st6nlnl08ropjta2svibu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

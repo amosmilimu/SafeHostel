@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#F5ACAC</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorPrimary1">#109689</color>
+    <color name="colorPrimaryDark1">#00797F</color>
+    <color name="colorAccent1">#464746</color>
+    <color name="orange">#F17425</color>
+    <color name="orange_light">#F09763</color>
+    <color name="links">#2645EC</color>
+
+    <color name="semi_black">#201E1E</color>
+    <color name="red">#E68282</color>
+    <color name="black">#000000</color>
+    <color name="contact_background">#F2F3F4</color>
+</resources>
