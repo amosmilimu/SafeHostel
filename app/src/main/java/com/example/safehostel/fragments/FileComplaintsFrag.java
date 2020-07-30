@@ -2,6 +2,8 @@ package com.example.safehostel.fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +15,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,9 +30,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.safehostel.R;
 import com.example.safehostel.adapters.complaints.ComplaintViewers;
 import com.example.safehostel.databinding.FagmentFileComplaintBinding;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -43,9 +54,8 @@ public class FileComplaintsFrag extends Fragment {
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private StorageReference mStorage;
     private FirebaseFirestore mDatabase;
-    Context context;
+    private Context context;
     private int chosenImage = 0;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -172,15 +182,19 @@ public class FileComplaintsFrag extends Fragment {
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                     if (chosenImage == 1){
                         binding.imviewOne.setImageBitmap(bitmap);
+                        uploadImages(selectedImageUri);
                     }
                     if (chosenImage == 2){
                         binding.imviewTwo.setImageBitmap(bitmap);
+                        uploadImages(selectedImageUri);
                     }
                     if (chosenImage == 3){
                         binding.imviewThree.setImageBitmap(bitmap);
+                        uploadImages(selectedImageUri);
                     }
                     if (chosenImage == 4){
                         binding.imviewFour.setImageBitmap(bitmap);
+                        uploadImages(selectedImageUri);
                     }
                     Bitmap resized = Bitmap.createScaledBitmap(bitmap,
                             150, 150, true);
@@ -198,5 +212,48 @@ public class FileComplaintsFrag extends Fragment {
         mydialog.setView(myview);
         final AlertDialog dialog = mydialog.create();
         dialog.show();
+    }
+
+    private String getFileExt(Uri uri){
+
+        ContentResolver cR = getActivity().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadImages(Uri selectedImageUri){
+        if (selectedImageUri != null){
+            StorageTask<UploadTask.TaskSnapshot> reference = mStorage.child(System.currentTimeMillis() + "." + getFileExt(selectedImageUri))
+                    .putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            getDownloadUrl(taskSnapshot);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        }
+                    });
+        }else {
+            Toast.makeText(getContext(),"No image was selected",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getDownloadUrl(UploadTask.TaskSnapshot taskSnapshot) {
+        Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+        task.addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String photoLink = uri.toString();
+            }
+        });
     }
 }
