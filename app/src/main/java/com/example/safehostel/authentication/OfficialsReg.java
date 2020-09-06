@@ -12,6 +12,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -54,12 +56,12 @@ public class OfficialsReg extends AppCompatActivity {
             }
         });
 
-        /*bnding.iAmAdmin.setOnClickListener(new View.OnClickListener() {
+        bnding.iAmAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchSecretDialog();
+               startActivity(new Intent(OfficialsReg.this,AdminRegistration.class));
             }
-        });*/
+        });
 
         bnding.tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +70,7 @@ public class OfficialsReg extends AppCompatActivity {
             }
         });
     }
+
 
     private void registerUserAuthDetails(){
         if (validations()){
@@ -84,8 +87,8 @@ public class OfficialsReg extends AppCompatActivity {
                                 if (task.isSuccessful()){
                                     user.put("email",bnding.etRegEmail.getText().toString());
                                     user.put("username",bnding.etRegUname.getText().toString());
-                                    user.put("hostel",bnding.etRegHostel.getText().toString());
-                                    user.put("institution",bnding.etRegInstitution.getText().toString());
+                                    user.put("hostel",bnding.etRegHostel.getSelectedItem().toString());
+                                    user.put("institution",bnding.etRegInstitution.getSelectedItem().toString());
                                     user.put("addmissionNo",bnding.etRegAdmNo.getText().toString());
                                     user.put("phoneNo",bnding.etRegPhone.getText().toString());
                                     user.put("role","student");
@@ -133,31 +136,6 @@ public class OfficialsReg extends AppCompatActivity {
 
     }
 
-    public void launchSecretDialog(){
-
-        final AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.secret_verification,null);
-        mDialog.setView(v);
-        final AlertDialog dialog = mDialog.create();
-        dialog.setCancelable(false);
-
-        dialog.show();
-
-        v.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        v.findViewById(R.id.btn_accept).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flagAdmin();
-            }
-        });
-    }
 
     public void flagAdmin(){
 
@@ -180,16 +158,6 @@ public class OfficialsReg extends AppCompatActivity {
             valid = false;
             bnding.etRegUname.setError("Required Field");
             bnding.etRegUname.requestFocus();
-        }
-        if (TextUtils.isEmpty(bnding.etRegHostel.getText().toString())){
-            valid = false;
-            bnding.etRegHostel.setError("Required Field");
-            bnding.etRegHostel.requestFocus();
-        }
-        if (TextUtils.isEmpty(bnding.etRegInstitution.getText().toString())){
-            valid = false;
-            bnding.etRegInstitution.setError("Required Field");
-            bnding.etRegInstitution.requestFocus();
         }
         if (TextUtils.isEmpty(bnding.etRegAdmNo.getText().toString())){
             valid = false;

@@ -1,90 +1,64 @@
 package com.example.safehostel.models;
 
 public class ComplaintListModel {
-    private String complaintTitle;
-    private String complaintDate;
-    private String complaintImgUrl1;
-    private String complaintImgUrl2;
-    private String complaintImgUrl3;
-    private String complaintImgUrl4;
-    private String complaintDesc;
-    private boolean complaintState;
+    private String title;
+    private String date;
+    private String imageUrl1;
+    private String imageUrl2;
+    private String imageUrl3;
+    private String imageUrl4;
+    private String description;
+    private String state;
+    private String post_id;
 
-    public ComplaintListModel(String complaintTitle, String complaintDate,
-                              String complaintImgUrl1, String complaintImgUrl2,
-                              String complaintImgUrl3, String complaintImgUrl4,
-                              String complaintDesc, boolean complaintState) {
-        this.complaintTitle = complaintTitle;
-        this.complaintDate = complaintDate;
-        this.complaintImgUrl1 = complaintImgUrl1;
-        this.complaintImgUrl2 = complaintImgUrl2;
-        this.complaintImgUrl3 = complaintImgUrl3;
-        this.complaintImgUrl4 = complaintImgUrl4;
-        this.complaintDesc = complaintDesc;
-        this.complaintState = complaintState;
+    public ComplaintListModel() {
     }
 
-    public String getComplaintTitle() {
-        return complaintTitle;
+    public ComplaintListModel(String title, String date, String imageUrl1, String imageUrl2, String imageUrl3, String imageUrl4, String description, String state, String post_id) {
+        this.title = title;
+        this.date = date;
+        this.imageUrl1 = imageUrl1;
+        this.imageUrl2 = imageUrl2;
+        this.imageUrl3 = imageUrl3;
+        this.imageUrl4 = imageUrl4;
+        this.description = description;
+        this.state = state;
+        this.post_id = post_id;
     }
 
-    public void setComplaintTitle(String complaintTitle) {
-        this.complaintTitle = complaintTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public String getComplaintDate() {
-        return complaintDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setComplaintDate(String complaintDate) {
-        this.complaintDate = complaintDate;
+    public String getImageUrl1() {
+        return imageUrl1;
     }
 
-    public String getComplaintImgUrl1() {
-        return complaintImgUrl1;
+    public String getImageUrl2() {
+        return imageUrl2;
     }
 
-    public void setComplaintImgUrl1(String complaintImgUrl1) {
-        this.complaintImgUrl1 = complaintImgUrl1;
+    public String getImageUrl3() {
+        return imageUrl3;
     }
 
-    public String getComplaintImgUrl2() {
-        return complaintImgUrl2;
+    public String getImageUrl4() {
+        return imageUrl4;
     }
 
-    public void setComplaintImgUrl2(String complaintImgUrl2) {
-        this.complaintImgUrl2 = complaintImgUrl2;
+    public String getDescription() {
+        return description;
     }
 
-    public String getComplaintImgUrl3() {
-        return complaintImgUrl3;
+    public String getState() {
+        return state;
     }
 
-    public void setComplaintImgUrl3(String complaintImgUrl3) {
-        this.complaintImgUrl3 = complaintImgUrl3;
-    }
-
-    public String getComplaintImgUrl4() {
-        return complaintImgUrl4;
-    }
-
-    public void setComplaintImgUrl4(String complaintImgUrl4) {
-        this.complaintImgUrl4 = complaintImgUrl4;
-    }
-
-    public String getComplaintDesc() {
-        return complaintDesc;
-    }
-
-    public void setComplaintDesc(String complaintDesc) {
-        this.complaintDesc = complaintDesc;
-    }
-
-    public boolean isComplaintState() {
-        return complaintState;
-    }
-
-    public void setComplaintState(boolean complaintState) {
-        this.complaintState = complaintState;
+    public String getPost_id() {
+        return post_id;
     }
 }

@@ -1,189 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <androidx.core.widget.NestedScrollView
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
-    tools:context=".authentication.OfficialsReg">
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/register"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <EditText
-        android:id="@+id/etRegEmail"
-        style="@style/hint"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:fontFamily="@font/agaramondpro_regular"
-        android:hint="@string/email_hint"
-        android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:layout_editor_absoluteX="3dp" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:hintAnimationEnabled="false"
-        app:hintEnabled="false"
-        app:layout_constraintTop_toBottomOf="@+id/etRegEmail"
-        app:passwordToggleEnabled="true"
-        tools:layout_editor_absoluteX="10dp">
-
-        <EditText
-            android:id="@+id/etRegPassword"
-            style="@style/hint"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="5dp"
-            android:ems="10"
-            android:fontFamily="@font/agaramondpro_regular"
-            android:hint="@string/password_hint"
-            android:inputType="textPassword"/>
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                tools:context=".authentication.OfficialsReg">
 
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <EditText
-        android:id="@+id/etRegUname"
-        style="@style/hint"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:fontFamily="@font/agaramondpro_regular"
-        android:hint="@string/username"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        tools:layout_editor_absoluteX="-28dp" />
-
-    <EditText
-        android:id="@+id/etRegHostel"
-        style="@style/hint"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:fontFamily="@font/agaramondpro_regular"
-        android:hint="@string/hostel"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/etRegUname"
-        tools:layout_editor_absoluteX="3dp" />
-
-    <EditText
-        android:id="@+id/etRegInstitution"
-        style="@style/hint"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:fontFamily="@font/agaramondpro_regular"
-        android:hint="@string/institution"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/etRegHostel"
-        tools:layout_editor_absoluteX="3dp" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/register"
+                    android:textSize="32sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-    <EditText
-        android:id="@+id/etRegAdmNo"
-        style="@style/hint"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:fontFamily="@font/agaramondpro_regular"
-        android:hint="@string/admission_no"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/etRegInstitution"
-        tools:layout_editor_absoluteX="-39dp" />
+                <EditText
+                    android:id="@+id/etRegEmail"
+                    style="@style/hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:ems="10"
+                    android:background="@drawable/et_backdesign"
+                    android:fontFamily="@font/agaramondpro_regular"
+                    android:hint="@string/email_hint"
+                    android:inputType="textEmailAddress"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2"
+                    tools:layout_editor_absoluteX="3dp" />
 
-    <EditText
-        android:id="@+id/etRegPhone"
-        style="@style/hint"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:fontFamily="@font/agaramondpro_regular"
-        android:hint="@string/phone_no"
-        android:inputType="phone"
-        app:layout_constraintTop_toBottomOf="@+id/etRegAdmNo"
-        tools:layout_editor_absoluteX="9dp" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:hintAnimationEnabled="false"
+                    app:hintEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@+id/etRegEmail"
+                    app:passwordToggleEnabled="true"
+                    tools:layout_editor_absoluteX="10dp">
+
+                    <EditText
+                        android:id="@+id/etRegPassword"
+                        style="@style/hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="5dp"
+                        android:ems="10"
+                        android:background="@drawable/et_backdesign"
+                        android:fontFamily="@font/agaramondpro_regular"
+                        android:hint="@string/password_hint"
+                        android:inputType="textPassword" />
 
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/btn_backdesign"
-        android:fontFamily="@font/agaramondpro_regular"
-        android:paddingStart="50dp"
-        android:paddingEnd="50dp"
-        android:text="@string/sign_in"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRegPhone" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:id="@+id/tvReg_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegister">
+                <EditText
+                    android:id="@+id/etRegUname"
+                    style="@style/hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="20dp"
+                    android:ems="10"
+                    android:background="@drawable/et_backdesign"
+                    android:fontFamily="@font/agaramondpro_regular"
+                    android:hint="@string/username"
+                    android:inputType="text"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+                    tools:layout_editor_absoluteX="-28dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="@string/already_registered"
-            android:padding="5dp"
-            android:layout_height="wrap_content"/>
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/etRegHostel"
+                    style="@style/hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:background="@drawable/et_backdesign"
+                    android:fontFamily="@font/agaramondpro_regular"
+                    android:inputType="text"
+                    android:entries="@array/array_hostels"
+                    app:layout_constraintTop_toBottomOf="@+id/etRegUname"
+                    tools:layout_editor_absoluteX="3dp" />
 
-        <TextView
-            android:id="@+id/tv_login"
-            android:layout_width="wrap_content"
-            android:textColor="@color/links"
-            android:padding="5dp"
-            android:text="@string/login"
-            android:layout_height="wrap_content"/>
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/etRegInstitution"
+                    style="@style/hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="20dp"
+                    android:ems="10"
+                    android:background="@drawable/et_backdesign"
+                    android:fontFamily="@font/agaramondpro_regular"
+                    android:hint="@string/institution"
+                    android:inputType="text"
+                    android:entries="@array/array_schools"
+                    app:layout_constraintTop_toBottomOf="@+id/etRegHostel"
+                    tools:layout_editor_absoluteX="3dp" />
 
+
+                <EditText
+                    android:id="@+id/etRegAdmNo"
+                    style="@style/hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:ems="10"
+                    android:background="@drawable/et_backdesign"
+                    android:fontFamily="@font/agaramondpro_regular"
+                    android:hint="@string/admission_no"
+                    android:inputType="text"
+                    app:layout_constraintTop_toBottomOf="@+id/etRegInstitution"
+                    tools:layout_editor_absoluteX="-39dp" />
+
+                <EditText
+                    android:id="@+id/etRegPhone"
+                    style="@style/hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:ems="10"
+                    android:background="@drawable/et_backdesign"
+                    android:fontFamily="@font/agaramondpro_regular"
+                    android:hint="@string/phone_no"
+                    android:inputType="phone"
+                    app:layout_constraintTop_toBottomOf="@+id/etRegAdmNo"
+                    tools:layout_editor_absoluteX="9dp" />
+
+
+                <Button
+                    android:id="@+id/btnRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/btn_backdesign"
+                    android:fontFamily="@font/agaramondpro_regular"
+                    android:paddingStart="50dp"
+                    android:paddingEnd="50dp"
+                    android:text="@string/sign_in"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etRegPhone" />
+
+                <LinearLayout
+                    android:id="@+id/tvReg_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnRegister">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/already_registered" />
+
+                    <TextView
+                        android:id="@+id/tv_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/login"
+                        android:textColor="@color/links" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/i_am_admin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:text="I am an Administrator"
+                    android:textColor="@color/links"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvReg_login" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
-
-    <!--<TextView
-        android:id="@+id/i_am_admin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:text="I am an Administrator"
-        android:textColor="@color/links"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvReg_login" />-->
-</androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
 </layout>

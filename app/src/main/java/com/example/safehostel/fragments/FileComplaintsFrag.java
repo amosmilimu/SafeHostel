@@ -10,8 +10,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -29,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.safehostel.R;
 import com.example.safehostel.adapters.complaints.ComplaintViewers;
+import com.example.safehostel.constants.Constants;
 import com.example.safehostel.databinding.FagmentFileComplaintBinding;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,15 +46,22 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.google.type.DateTime;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+
 
 public class FileComplaintsFrag extends Fragment {
     private FagmentFileComplaintBinding binding;
@@ -61,6 +72,8 @@ public class FileComplaintsFrag extends Fragment {
     private Context context;
     private int chosenImage = 0;
     private Map<Object,String> complaintMap = new HashMap<>();
+    private String timeStamp;
+    private static final String TAG = "FileComplaintsFrag";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,6 +84,8 @@ public class FileComplaintsFrag extends Fragment {
         //firebase
         mStorage = FirebaseStorage.getInstance().getReference("uploads");
         mDatabase = FirebaseFirestore.getInstance();
+        timeStamp = new SimpleDateFormat("dd/MMM/yyyy").format(Calendar.getInstance().getTime());
+        Log.e(TAG, "onCreateView: "+timeStamp );
 
         binding.imviewOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,13 +141,17 @@ public class FileComplaintsFrag extends Fragment {
     }
 
     private void uploadComplaintToFirestore() {
+        String post_id = String.valueOf(System.currentTimeMillis());
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         complaintMap.put("title",binding.etComplaintTitle.getText().toString());
         complaintMap.put("description",binding.etComplaintDesc.getText().toString());
+        complaintMap.put("date",timeStamp );
+        complaintMap.put("state","private" );
+        complaintMap.put("post_id",post_id);
         mDatabase.collection("complaints")
                 .document(uid)
-                .collection(String.valueOf(System.currentTimeMillis()))
-                .document("").set(complaintMap)//TODO add doc path
+                .collection("myComplaint")
+                .document(post_id).set(complaintMap)//TODO add doc path
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -245,17 +264,19 @@ public class FileComplaintsFrag extends Fragment {
 
     private void uploadImages(Uri selectedImageUri){
         if (selectedImageUri != null){
+            Constants.showProgressDialog(getContext());
             StorageTask<UploadTask.TaskSnapshot> reference = mStorage.child(System.currentTimeMillis() + "." + getFileExt(selectedImageUri))
                     .putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                            Constants.cancelDialog();
                             getDownloadUrl(taskSnapshot);
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            Constants.cancelDialog();
 
                         }
                     }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -270,6 +291,7 @@ public class FileComplaintsFrag extends Fragment {
     }
 
     private void getDownloadUrl(UploadTask.TaskSnapshot taskSnapshot) {
+        Constants.cancelDialog();
         Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
         task.addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

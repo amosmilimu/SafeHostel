@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -25,17 +26,24 @@ import com.example.safehostel.fragments.ComplaintHome;
 import com.example.safehostel.fragments.HostelRatings;
 import com.example.safehostel.fragments.MyComplaints;
 import com.example.safehostel.fragments.EditAccount;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     ActivityMainBinding mainBinding;
     private DrawerLayout drawer;
     private TextView tvEditProfile;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser mUser;
+    private NavigationView navigationView;
+    private String role;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("extreme", 0);
-
+        
+        checkURoles();
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mUser!=null&&mUser.isEmailVerified()){
@@ -64,13 +73,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mAuth = FirebaseAuth.getInstance();
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
 
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.navHeaderName);
         navUsername.setText(sharedPreferences.getString("username","Default"));
 
         navigationView.setNavigationItemSelectedListener(this);
+        
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -84,6 +94,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new ComplaintHome()).commit();
 
             navigationView.setCheckedItem(R.id.home_frag);}
+    }
+
+    private void checkURoles() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference reference = db.collection("users").document(mAuth.getCurrentUser().getUid());
+        reference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                role = documentSnapshot.get("role").toString();
+                if (role.equals("super_admin")){
+                    navigationView.getMenu().findItem(R.id.settings).setVisible(true);
+                }else {
+                    navigationView.getMenu().findItem(R.id.settings).setVisible(false);
+                }
+            }
+        });
     }
 
     @Override

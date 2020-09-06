@@ -22,6 +22,7 @@
     <string name="username">Username</string>
     <string name="hostel">Hostel</string>
     <string name="institution">Institution</string>
+    <string name="institution_hostel">Institution/Hostel</string>
     <string name="admission_no">Admission No.</string>
     <string name="phone_no">Phone No.</string>
     <string name="already_registered">Already Registered</string>
@@ -44,4 +45,25 @@
         experience can also contribute to your rating for that particular hostel helping others not go through the
         same experience.
     </string>
+
+    <string name="admin_waiting">
+        Thank you for registering as an admin. Your account will be verified and approved within 12 - 24 hours. Kindly
+        check again after the specified period of time. You will be able to log in.
+    </string>
+
+    <string-array name="array_hostels">
+        <item>Select Hostel</item>
+        <item>Qwetu</item>
+        <item>Kwao</item>
+        <item>Kwenu</item>
+    </string-array>
+
+    <string-array name="array_schools">
+        <item>Select Institution</item>
+        <item>TUK</item>
+        <item>JKUAT</item>
+        <item>MMUST</item>
+        <item>KU</item>
+        <item>MU</item>
+    </string-array>
 </resources>

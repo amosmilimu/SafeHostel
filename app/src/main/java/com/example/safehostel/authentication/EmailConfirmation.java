@@ -12,12 +12,17 @@ import com.example.safehostel.databinding.ActivityEmailConfirmationBinding;
 
 public class EmailConfirmation extends AppCompatActivity {
 
-    ActivityEmailConfirmationBinding binding;
+    private ActivityEmailConfirmationBinding binding;
+    private Bundle bundle = new Bundle();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_email_confirmation);
+
+        bundle = getIntent().getExtras();
+
 
         binding.goToEmail.setOnClickListener(new View.OnClickListener() {
             @Override

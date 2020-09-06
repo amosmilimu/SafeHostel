@@ -36,8 +36,7 @@
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_vector"
-            android:visible="false"
-            android:title="Settings" />
+            android:title="Admins" />
 
         <item android:id="@+id/none"
             android:title=""

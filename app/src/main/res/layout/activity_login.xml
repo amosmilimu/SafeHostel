@@ -79,7 +79,7 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="16dp"
@@ -87,7 +87,7 @@
         android:fontFamily="@font/agaramondpro_regular"
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
-        android:text="@string/sign_in"
+        android:text="@string/login"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"

@@ -41,7 +41,8 @@ public class ComplaintHome extends Fragment {
                     "null",
                     "null",
                     "There was theft at qwetu...",
-                    true
+                    "private",
+                    ""
             );
             complaintListModels.add(item);
         }

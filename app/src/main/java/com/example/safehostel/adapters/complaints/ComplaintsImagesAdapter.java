@@ -1,6 +1,7 @@
 package com.example.safehostel.adapters.complaints;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -8,19 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.safehostel.R;
 import com.example.safehostel.databinding.ListComplaintsImagesBinding;
-import com.example.safehostel.models.ComplaintImageModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComplaintsImagesAdapter extends RecyclerView.
         Adapter<ComplaintsImagesAdapter.ViewHolder> {
     private Context context;
-    private List<ComplaintImageModel> complaintImageModels;
+    private ArrayList<String> complaintImageModels;
+    private static final String TAG = "ComplaintsImagesAdapter";
 
-    public ComplaintsImagesAdapter(Context context,
-                                   List<ComplaintImageModel> complaintImageModels) {
+    public ComplaintsImagesAdapter(Context context, ArrayList<String> complaintImageModels) {
         this.context = context;
         this.complaintImageModels = complaintImageModels;
     }
@@ -37,7 +39,11 @@ public class ComplaintsImagesAdapter extends RecyclerView.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final ComplaintImageModel item = complaintImageModels.get(position);
+        Glide.with(context)
+                .load(complaintImageModels.get(position))
+                .centerCrop()
+                .placeholder(R.drawable.ic_image_place)
+                .into(holder.binding.complaintImages);
     }
 
     @Override

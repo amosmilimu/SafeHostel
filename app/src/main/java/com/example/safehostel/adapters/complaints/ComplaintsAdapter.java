@@ -2,14 +2,18 @@ package com.example.safehostel.adapters.complaints;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.safehostel.ComplaintMore;
 import com.example.safehostel.R;
 import com.example.safehostel.databinding.ListComplaintsBinding;
@@ -40,13 +44,19 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final ComplaintListModel item = complaintListModels.get(position);
 
-        holder.binding.complaintDate.setText(item.getComplaintDate());
-        holder.binding.complaintDesc.setText(item.getComplaintDesc());
-        holder.binding.complaintTitle.setText(item.getComplaintTitle());
-        holder.binding.cardComplaints.setOnClickListener(new View.OnClickListener() {
+        holder.binding.complaintDate.setText(item.getDate());
+        holder.binding.complaintDesc.setText(item.getDescription());
+        holder.binding.complaintTitle.setText(item.getTitle());
+        Glide.with(context)
+                .load(item.getImageUrl1())
+                .centerCrop()
+                .placeholder(R.drawable.ic_image_place)
+                .into(holder.binding.complaintImage);
+        holder.binding.complaintImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ComplaintMore.class);
+                intent.putExtra("post_id",item.getPost_id());
                 context.startActivity(intent);
             }
         });

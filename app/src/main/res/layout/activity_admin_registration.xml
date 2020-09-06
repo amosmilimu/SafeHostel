@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/agaramondpro_regular"
+            android:text="Provide the following details"
+            android:textSize="18sp" />
+
+
+        <EditText
+            android:id="@+id/admin_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_backdesign"
+            android:hint="email"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/admin_uname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_backdesign"
+            android:hint="Name"
+            android:padding="10dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/etRegEmail"
+            app:passwordToggleEnabled="true"
+            tools:layout_editor_absoluteX="10dp">
+
+            <EditText
+                android:id="@+id/etRegPassword"
+                style="@style/hint"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/et_backdesign"
+                android:ems="10"
+                android:fontFamily="@font/agaramondpro_regular"
+                android:hint="@string/password_hint"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/admin_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_backdesign"
+            android:hint="Phone"
+            android:padding="10dp" />
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/institution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_backdesign"
+            android:entries="@array/array_schools"
+            android:padding="10dp" />
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/hostel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_backdesign"
+            android:entries="@array/array_hostels"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btnRegisterAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/btn_backdesign"
+            android:fontFamily="@font/agaramondpro_regular"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
+            android:text="@string/sign_in"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etRegPhone" />
+
+    </LinearLayout>
+</layout>

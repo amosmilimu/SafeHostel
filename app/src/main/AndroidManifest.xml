@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".base.BaseActivity"></activity>
+        <activity android:name=".authentication.AdminWaiting"></activity>
+        <activity android:name=".authentication.AdminRegistration" />
+        <activity android:name=".base.BaseActivity" />
         <activity android:name=".ComplaintMore" />
         <activity android:name=".authentication.EmailConfirmation" />
         <activity android:name=".authentication.OfficialsReg" />
