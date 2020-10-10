@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void checkURoles() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference reference = db.collection("users").document(mAuth.getCurrentUser().getUid());
+        DocumentReference reference = db.collection("users").document(mAuth.getCurrentUser()!=null?mAuth.getCurrentUser().getUid():"document");
         reference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
