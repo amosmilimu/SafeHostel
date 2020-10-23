@@ -75,7 +75,7 @@ public class ComplaintHome extends Fragment {
             ComplaintListModel complaintListModel = documentSnapshot.toObject(ComplaintListModel.class);
             list_complaintListModels.add(complaintListModel);
         }
-        ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels);
+        ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels,true);
         binding.recyclerComplaints.setHasFixedSize(true);
         binding.recyclerComplaints.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerComplaints.setAdapter(mAdapter);

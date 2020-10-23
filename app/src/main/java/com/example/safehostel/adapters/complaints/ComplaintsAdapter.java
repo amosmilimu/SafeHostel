@@ -25,10 +25,12 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
 
     private Context context;
     private List<ComplaintListModel> complaintListModels;
+    private boolean isHome;
 
-    public ComplaintsAdapter(Context context, List<ComplaintListModel> complaintListModels) {
+    public ComplaintsAdapter(Context context, List<ComplaintListModel> complaintListModels,boolean isHome) {
         this.context = context;
         this.complaintListModels = complaintListModels;
+        this.isHome = isHome;
     }
 
     @NonNull
@@ -43,7 +45,6 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final ComplaintListModel item = complaintListModels.get(position);
-
         holder.binding.complaintDate.setText(item.getDate());
         holder.binding.complaintDesc.setText(item.getDescription());
         holder.binding.complaintTitle.setText(item.getTitle());
@@ -74,6 +75,16 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
         public ViewHolder(@NonNull ListComplaintsBinding listComplaintsBinding) {
             super(listComplaintsBinding.getRoot());
             this.binding = listComplaintsBinding;
+
+            if (isHome) {
+                listComplaintsBinding.complaintSwitch.setVisibility(View.INVISIBLE);
+                listComplaintsBinding.commentCancel.setVisibility(View.INVISIBLE);
+                listComplaintsBinding.switchText.setVisibility(View.INVISIBLE);
+            } else {
+                listComplaintsBinding.complaintSwitch.setVisibility(View.VISIBLE);
+                listComplaintsBinding.commentCancel.setVisibility(View.VISIBLE);
+                listComplaintsBinding.switchText.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
