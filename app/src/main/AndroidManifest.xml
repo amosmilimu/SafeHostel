@@ -14,20 +14,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".authentication.AdminWaiting"></activity>
+        <activity android:name=".authentication.AdminWaiting" />
         <activity android:name=".authentication.AdminRegistration" />
         <activity android:name=".base.BaseActivity" />
         <activity android:name=".ComplaintMore" />
         <activity android:name=".authentication.EmailConfirmation" />
         <activity android:name=".authentication.OfficialsReg" />
-        <activity android:name=".authentication.LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".authentication.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>

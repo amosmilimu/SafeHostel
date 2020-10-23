@@ -25,6 +25,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -38,7 +39,7 @@ public class ComplaintHome extends Fragment {
     private FirebaseUser mUser = mAuth.getCurrentUser();
     private static final String TAG = "MyComplaints";
     private ListenerRegistration listener;
-    private CollectionReference reference = db.collection("complaints").document(mUser != null ? mUser.getUid() : "").collection("myComplaint");
+    private Query reference =  db.collectionGroup("myComplaint");
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,9 +48,9 @@ public class ComplaintHome extends Fragment {
         return v;
     }
 
+
     @Override
     public void onStart() {
-        super.onStart();
         listener = reference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -59,12 +60,13 @@ public class ComplaintHome extends Fragment {
                 }
 
                 if (value != null){
-                    iterateComplaints(value);
+                    for(QueryDocumentSnapshot documentSnapshot:value){
+                        iterateComplaints(value);
+                    }
                 }
-
             }
         });
-
+        super.onStart();
     }
 
     private void iterateComplaints(QuerySnapshot value) {
