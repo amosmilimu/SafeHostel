@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:fontFamily="@font/agaramondpro_regular"
-                        android:text="public" />
+                        android:text="@string/private_text" />
 
                     <Switch
                         android:id="@+id/complaint_switch"

@@ -12,6 +12,8 @@
     <string name="forgot_password"><u>Forgot password?</u></string>
     <string name="name_hint">Name</string>
     <string name="sign_up">SIGN UP</string>
+    <string name="private_text">private</string>
+    <string name="public_text">public</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="gold_pkg_text">Body wash\n\nInterior wipe down\n\nExterior polish\n\nInterior vacuum\n\nDashboard shine</string>

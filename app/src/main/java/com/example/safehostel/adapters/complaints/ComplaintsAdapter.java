@@ -2,12 +2,11 @@ package com.example.safehostel.adapters.complaints;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -18,6 +17,12 @@ import com.example.safehostel.ComplaintMore;
 import com.example.safehostel.R;
 import com.example.safehostel.databinding.ListComplaintsBinding;
 import com.example.safehostel.models.ComplaintListModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -26,6 +31,10 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
     private Context context;
     private List<ComplaintListModel> complaintListModels;
     private boolean isHome;
+    private DocumentReference reference;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    private static final String TAG = "ComplaintsAdapter";
 
     public ComplaintsAdapter(Context context, List<ComplaintListModel> complaintListModels,boolean isHome) {
         this.context = context;
@@ -43,7 +52,7 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final ComplaintListModel item = complaintListModels.get(position);
         holder.binding.complaintDate.setText(item.getDate());
         holder.binding.complaintDesc.setText(item.getDescription());
@@ -62,7 +71,41 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
             }
         });
 
+        holder.binding.complaintSwitch
+                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    holder.binding.switchText.setText(R.string.public_text);
+                    updateVisibility(item,"public");
+                } else {
+                    holder.binding.switchText.setText(R.string.private_text);
+                    updateVisibility(item,"private");
+                }
+            }
+        });
+
     }
+
+    private void updateVisibility(ComplaintListModel item, String status) {
+        reference = db.collection("complaints")
+                .document(mUser != null ? mUser.getUid() : "")
+                .collection("myComplaint")
+                .document(item.getPost_id());
+        reference.update("state",status)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.e(TAG, "onSuccess: successful");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onSuccess: faile"+e.getMessage(),e);
+            }
+        });
+    }
+
 
     @Override
     public int getItemCount() {
