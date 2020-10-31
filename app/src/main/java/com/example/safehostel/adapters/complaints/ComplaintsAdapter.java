@@ -2,6 +2,7 @@ package com.example.safehostel.adapters.complaints;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,8 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
     FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private static final String TAG = "ComplaintsAdapter";
 
-    public ComplaintsAdapter(Context context, List<ComplaintListModel> complaintListModels,boolean isHome) {
+    public ComplaintsAdapter(Context context,
+                             List<ComplaintListModel> complaintListModels,boolean isHome) {
         this.context = context;
         this.complaintListModels = complaintListModels;
         this.isHome = isHome;
@@ -44,7 +46,8 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
 
     @NonNull
     @Override
-    public ComplaintsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ComplaintsAdapter.ViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent, int viewType) {
         ListComplaintsBinding binding = DataBindingUtil.
                 inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.list_complaints,parent,false);
@@ -71,19 +74,25 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
             }
         });
 
-        holder.binding.complaintSwitch
-                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.binding.complaintSwitch.setChecked(getSwitchState());
+        holder.binding.complaintSwitch.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b){
                     holder.binding.switchText.setText(R.string.public_text);
                     updateVisibility(item,"public");
+                    switchData(true);
+                    Log.e(TAG, "onCheckedChanged: "+b);
                 } else {
                     holder.binding.switchText.setText(R.string.private_text);
                     updateVisibility(item,"private");
+                    switchData(false);
+                    Log.e(TAG, "onCheckedChanged: "+b);
                 }
             }
         });
+
 
     }
 
@@ -104,6 +113,20 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
                 Log.e(TAG, "onSuccess: faile"+e.getMessage(),e);
             }
         });
+    }
+
+    private void switchData(boolean prefState){
+        SharedPreferences pref = context
+                .getSharedPreferences("sharedprefs",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("prefState",prefState);
+        editor.apply();
+    }
+
+    private boolean getSwitchState(){
+        SharedPreferences pref = context
+                .getSharedPreferences("sharedprefs",Context.MODE_PRIVATE);
+        return pref.getBoolean("prefState",false);
     }
 
 

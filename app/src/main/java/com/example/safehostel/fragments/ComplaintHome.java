@@ -42,8 +42,11 @@ public class ComplaintHome extends Fragment {
     private Query reference =  db.collectionGroup("myComplaint");
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fagment_complaint_home,container,false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil
+                .inflate(inflater,R.layout.fagment_complaint_home,container,false);
         View v = binding.getRoot();
         return v;
     }
@@ -72,8 +75,12 @@ public class ComplaintHome extends Fragment {
     private void iterateComplaints(QuerySnapshot value) {
         List<ComplaintListModel> list_complaintListModels = new ArrayList<>();
         for(QueryDocumentSnapshot documentSnapshot: value){
-            ComplaintListModel complaintListModel = documentSnapshot.toObject(ComplaintListModel.class);
-            list_complaintListModels.add(complaintListModel);
+            ComplaintListModel complaintListModel = documentSnapshot
+                    .toObject(ComplaintListModel.class);
+            if (complaintListModel.getState().equals("public")){
+                list_complaintListModels.add(complaintListModel);
+            }
+
         }
         ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels,true);
         binding.recyclerComplaints.setHasFixedSize(true);
