@@ -40,7 +40,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -68,24 +76,32 @@ public class FileComplaintsFrag extends Fragment {
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private StorageReference mStorage;
-    private FirebaseFirestore mDatabase;
+    private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private Context context;
     private int chosenImage = 0;
-    private Map<Object,String> complaintMap = new HashMap<>();
+    private Map<Object, String> complaintMap = new HashMap<>();
     private String timeStamp;
     private static final String TAG = "FileComplaintsFrag";
+    private CollectionReference reference = mDatabase.collection("users");
+    private ListenerRegistration listener;
+    private List<String> myList = new ArrayList<>();
+
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding =  DataBindingUtil.inflate(inflater,R.layout.fagment_file_complaint,container,false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater,
+                R.layout.fagment_file_complaint, container, false);
         View v = binding.getRoot();
         context = this.getContext();
 
         //firebase
         mStorage = FirebaseStorage.getInstance().getReference("uploads");
-        mDatabase = FirebaseFirestore.getInstance();
-        timeStamp = new SimpleDateFormat("dd/MMM/yyyy").format(Calendar.getInstance().getTime());
-        Log.e(TAG, "onCreateView: "+timeStamp );
+        timeStamp = new SimpleDateFormat("dd/MMM/yyyy")
+                .format(Calendar.getInstance().getTime());
+        Log.e(TAG, "onCreateView: " + timeStamp);
 
         binding.imviewOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,20 +150,51 @@ public class FileComplaintsFrag extends Fragment {
                 showDialogInfo();
             }
         });
+        binding.btnViewers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showViewersDialog();
+            }
+        });
 
 
         return v;
 
     }
 
+    @Override
+    public void onStart() {
+        listener = reference.whereEqualTo("role","admin").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Toast.makeText(getContext(), "Error while loading", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "onEvent: " + error.getMessage());
+                } else {
+                    if (value != null){
+                        iterateThroughAdmins(value);
+                    }
+
+                }
+            }
+        });
+        super.onStart();
+    }
+
+    private void iterateThroughAdmins(QuerySnapshot value) {
+        for (QueryDocumentSnapshot documentSnapshot: value) {
+            myList.add(documentSnapshot.get("username").toString());
+        }
+    }
+
     private void uploadComplaintToFirestore() {
         String post_id = String.valueOf(System.currentTimeMillis());
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        complaintMap.put("title",binding.etComplaintTitle.getText().toString());
-        complaintMap.put("description",binding.etComplaintDesc.getText().toString());
-        complaintMap.put("date",timeStamp );
-        complaintMap.put("state","private" );
-        complaintMap.put("post_id",post_id);
+        complaintMap.put("title", binding.etComplaintTitle.getText().toString());
+        complaintMap.put("description", binding.etComplaintDesc.getText().toString());
+        complaintMap.put("date", timeStamp);
+        complaintMap.put("state", "private");
+        complaintMap.put("post_id", post_id);
         mDatabase.collection("complaints")
                 .document(uid)
                 .collection("myComplaint")
@@ -163,16 +210,11 @@ public class FileComplaintsFrag extends Fragment {
     private void showViewersDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View view = inflater.inflate(R.layout.list_complaint_viewers,null);
+        View view = inflater.inflate(R.layout.list_complaint_viewers, null);
         builder.setView(view);
         AlertDialog alertDialog = builder.create();
 
-        List<String> viewers = new ArrayList<>();
-        for (int i = 0; i <50; i++) {
-            String name = "Luke";
-            viewers.add(name);
-        }
-        ComplaintViewers complaintViewers = new ComplaintViewers(getContext(),viewers);
+        ComplaintViewers complaintViewers = new ComplaintViewers(getContext(), myList);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_viewers);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -188,7 +230,7 @@ public class FileComplaintsFrag extends Fragment {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_CODE_STORAGE_PERMISSION);
-        }else {
+        } else {
             Intent intent = new Intent(Intent.ACTION_PICK,
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -221,19 +263,19 @@ public class FileComplaintsFrag extends Fragment {
                     InputStream inputStream = getActivity().getContentResolver().
                             openInputStream(selectedImageUri);
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    if (chosenImage == 1){
+                    if (chosenImage == 1) {
                         binding.imviewOne.setImageBitmap(bitmap);
                         uploadImages(selectedImageUri);
                     }
-                    if (chosenImage == 2){
+                    if (chosenImage == 2) {
                         binding.imviewTwo.setImageBitmap(bitmap);
                         uploadImages(selectedImageUri);
                     }
-                    if (chosenImage == 3){
+                    if (chosenImage == 3) {
                         binding.imviewThree.setImageBitmap(bitmap);
                         uploadImages(selectedImageUri);
                     }
-                    if (chosenImage == 4){
+                    if (chosenImage == 4) {
                         binding.imviewFour.setImageBitmap(bitmap);
                         uploadImages(selectedImageUri);
                     }
@@ -246,24 +288,25 @@ public class FileComplaintsFrag extends Fragment {
             }
         }
     }
-    private void showDialogInfo(){
+
+    private void showDialogInfo() {
         AlertDialog.Builder mydialog = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
-        View myview = inflater.inflate(R.layout.add_complaint_info,null);
+        View myview = inflater.inflate(R.layout.add_complaint_info, null);
         mydialog.setView(myview);
         final AlertDialog dialog = mydialog.create();
         dialog.show();
     }
 
-    private String getFileExt(Uri uri){
+    private String getFileExt(Uri uri) {
 
         ContentResolver cR = getActivity().getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void uploadImages(Uri selectedImageUri){
-        if (selectedImageUri != null){
+    private void uploadImages(Uri selectedImageUri) {
+        if (selectedImageUri != null) {
             Constants.showProgressDialog(getContext());
             StorageTask<UploadTask.TaskSnapshot> reference = mStorage.child(System.currentTimeMillis() + "." + getFileExt(selectedImageUri))
                     .putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -285,8 +328,8 @@ public class FileComplaintsFrag extends Fragment {
 
                         }
                     });
-        }else {
-            Toast.makeText(getContext(),"No image was selected",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "No image was selected", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -298,19 +341,25 @@ public class FileComplaintsFrag extends Fragment {
             public void onSuccess(Uri uri) {
                 String photoLink = uri.toString();
 
-                if (chosenImage == 1){
-                    complaintMap.put("imageUrl1",photoLink);
+                if (chosenImage == 1) {
+                    complaintMap.put("imageUrl1", photoLink);
                 }
-                if (chosenImage == 2){
-                    complaintMap.put("imageUrl2",photoLink);
+                if (chosenImage == 2) {
+                    complaintMap.put("imageUrl2", photoLink);
                 }
-                if (chosenImage == 3){
-                    complaintMap.put("imageUrl3",photoLink);
+                if (chosenImage == 3) {
+                    complaintMap.put("imageUrl3", photoLink);
                 }
-                if (chosenImage == 4){
-                    complaintMap.put("imageUrl4",photoLink);
+                if (chosenImage == 4) {
+                    complaintMap.put("imageUrl4", photoLink);
                 }
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        listener.remove();
+        super.onStop();
     }
 }

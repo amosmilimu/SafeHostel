@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         mainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("extreme", 0);
+        SharedPreferences sharedPreferences = getApplicationContext()
+                .getSharedPreferences("extreme", 0);
         
         checkURoles();
 
@@ -82,15 +83,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
-                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle =
+                new ActionBarDrawerToggle(this,drawer,toolbar,
+                R.string.navigation_drawer_open,
+                        R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         if(savedInstanceState == null){
 
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container,
                     new ComplaintHome()).commit();
 
             navigationView.setCheckedItem(R.id.home_frag);}
@@ -98,8 +102,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void checkURoles() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference reference = db.collection("users").document(mAuth.getCurrentUser()!=null?mAuth.getCurrentUser().getUid():"document");
-        reference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        DocumentReference reference = db.collection("users")
+                .document(mAuth.getCurrentUser()!=null?mAuth
+                        .getCurrentUser()
+                        .getUid():"document");
+        reference.get().addOnSuccessListener(
+                new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 role = documentSnapshot.get("role").toString();

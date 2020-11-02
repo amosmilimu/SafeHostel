@@ -126,6 +126,14 @@
         android:inputType="textMultiLine" />
 
     <Button
+        android:id="@+id/btnViewers"
+        android:layout_width="match_parent"
+        android:text="Select Viewers"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textSize="24sp"
+        android:layout_height="wrap_content"/>
+    <Button
         android:id="@+id/btnSubmitDetails"
         android:layout_width="match_parent"
         android:text="Submit"
