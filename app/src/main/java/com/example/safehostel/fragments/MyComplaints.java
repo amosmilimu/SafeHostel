@@ -29,10 +29,12 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MyComplaints extends Fragment {
@@ -43,32 +45,77 @@ public class MyComplaints extends Fragment {
     private static final String TAG = "MyComplaints";
     private ListenerRegistration listener;
     private CollectionReference reference = db.collection("complaints").document(mUser != null ? mUser.getUid() : "").collection("myComplaint");
+    private Query reference2 =  db.collectionGroup("myComplaint");
+    private boolean isAdmin = false;
+    private String role;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fagment_complaint_home, container, false);
         View v = binding.getRoot();
+        Log.e(TAG, "onCreate: oooooooooooooooooooooooooncrrrrrreate" );
+        checkURoles();
         return v;
     }
 
-    @Override
-    public void onStart() {
+    private void checkURoles() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference reference = db.collection("users")
+                .document(mAuth.getCurrentUser()!=null?mAuth
+                        .getCurrentUser()
+                        .getUid():"document");
+        reference.get().addOnSuccessListener(
+                new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        role = documentSnapshot.get("role").toString();
+                        isAdmin = role.equals("admin");
+                        Log.e(TAG, "onSuccess: "+isAdmin );
+                        onCustomStart(isAdmin);
+                    }
+                });
+    }
+
+    //@Override
+    public void onCustomStart(boolean isAdmin) {
         super.onStart();
-        listener = reference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null){
-                    Toast.makeText(getContext(),"Error while loading",Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onEvent: "+error.getMessage() );
-                }
+        Log.e(TAG, "onStart: ooooooooooooooooooooooooonsttttaaaaaaaaaaaaart" );
+        Log.e(TAG, "onStart: "+isAdmin );
+        if(isAdmin) {
+            reference2.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (error != null) {
+                        Toast.makeText(getContext(), "Error while loading", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "onEvent: " + error.getMessage());
+                    }
 
-                if (value != null){
-                    iterateComplaints(value);
+                    if (value != null) {
+                        for (QueryDocumentSnapshot documentSnapshot : value) {
+                            iterateComplaints(value);
+                        }
+                    }
                 }
+            });
 
-            }
-        });
+
+        }else {
+            reference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (error != null){
+                        Toast.makeText(getContext(),"Error while loading",Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "onEvent: "+error.getMessage() );
+                    }
+
+                    if (value != null){
+                        iterateComplaints(value);
+                    }
+
+                }
+            });
+        }
 
     }
 
@@ -76,7 +123,20 @@ public class MyComplaints extends Fragment {
         List<ComplaintListModel> list_complaintListModels = new ArrayList<>();
         for(QueryDocumentSnapshot documentSnapshot: value){
             ComplaintListModel complaintListModel = documentSnapshot.toObject(ComplaintListModel.class);
-            list_complaintListModels.add(complaintListModel);
+            Log.e(TAG, "iterateComplaints: "+isAdmin );
+            if (isAdmin) {
+                if(complaintListModel.getViewers()!=null){
+                    String replace = complaintListModel.getViewers().replace("[","");
+                    String replace1 = replace.replace("]","");
+                    List<String> myList = new ArrayList<String>(Arrays.asList(replace1.split(",")));
+
+                    if(myList.contains(mUser != null ? mUser.getUid() : "")){
+                        list_complaintListModels.add(complaintListModel);
+                    }
+                }
+            } else {
+                list_complaintListModels.add(complaintListModel);
+            }
         }
         ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels,false);
         binding.recyclerComplaints.setHasFixedSize(true);

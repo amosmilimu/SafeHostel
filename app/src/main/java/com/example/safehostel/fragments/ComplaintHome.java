@@ -18,9 +18,12 @@ import com.example.safehostel.adapters.complaints.ComplaintsAdapter;
 import com.example.safehostel.databinding.FagmentComplaintHomeBinding;
 import com.example.safehostel.databinding.FagmentFileComplaintBinding;
 import com.example.safehostel.models.ComplaintListModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -40,6 +43,8 @@ public class ComplaintHome extends Fragment {
     private static final String TAG = "MyComplaints";
     private ListenerRegistration listener;
     private Query reference =  db.collectionGroup("myComplaint");
+    private boolean isAdmin = false;
+    private String role;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,7 +63,7 @@ public class ComplaintHome extends Fragment {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null){
-                    Toast.makeText(getContext(),"Error while loading",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(),"Error while loading",Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "onEvent: "+error.getMessage() );
                 }
 

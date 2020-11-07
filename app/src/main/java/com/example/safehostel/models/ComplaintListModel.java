@@ -10,11 +10,12 @@ public class ComplaintListModel {
     private String description;
     private String state;
     private String post_id;
+    private String viewers;
 
     public ComplaintListModel() {
     }
 
-    public ComplaintListModel(String title, String date, String imageUrl1, String imageUrl2, String imageUrl3, String imageUrl4, String description, String state, String post_id) {
+    public ComplaintListModel(String title, String date, String imageUrl1, String imageUrl2, String imageUrl3, String imageUrl4, String description, String state, String post_id, String viewers) {
         this.title = title;
         this.date = date;
         this.imageUrl1 = imageUrl1;
@@ -24,6 +25,7 @@ public class ComplaintListModel {
         this.description = description;
         this.state = state;
         this.post_id = post_id;
+        this.viewers = viewers;
     }
 
     public String getTitle() {
@@ -60,5 +62,9 @@ public class ComplaintListModel {
 
     public String getPost_id() {
         return post_id;
+    }
+
+    public String getViewers() {
+        return viewers;
     }
 }

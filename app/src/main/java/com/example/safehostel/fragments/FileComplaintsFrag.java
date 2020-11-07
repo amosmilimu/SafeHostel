@@ -2,15 +2,15 @@ package com.example.safehostel.fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ContentProvider;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -22,27 +22,23 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.safehostel.R;
 import com.example.safehostel.adapters.complaints.ComplaintViewers;
 import com.example.safehostel.constants.Constants;
 import com.example.safehostel.databinding.FagmentFileComplaintBinding;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -54,19 +50,14 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-import com.google.type.DateTime;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -85,6 +76,8 @@ public class FileComplaintsFrag extends Fragment {
     private CollectionReference reference = mDatabase.collection("users");
     private ListenerRegistration listener;
     private List<String> myList = new ArrayList<>();
+    private ArrayList<String> myUidList = new ArrayList<>();
+    private ArrayList<String> viewers;
 
 
     @Nullable
@@ -157,10 +150,23 @@ public class FileComplaintsFrag extends Fragment {
             }
         });
 
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(
+                mMessageReceiver, new IntentFilter("message")
+        );
+
 
         return v;
 
     }
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            viewers = intent.getStringArrayListExtra("viewers");
+            Log.e(TAG, "onReceive: "+ viewers);
+
+        }
+    };
 
     @Override
     public void onStart() {
@@ -184,6 +190,7 @@ public class FileComplaintsFrag extends Fragment {
     private void iterateThroughAdmins(QuerySnapshot value) {
         for (QueryDocumentSnapshot documentSnapshot: value) {
             myList.add(documentSnapshot.get("username").toString());
+            myUidList.add(documentSnapshot.get("user_uid").toString());
         }
     }
 
@@ -195,6 +202,7 @@ public class FileComplaintsFrag extends Fragment {
         complaintMap.put("date", timeStamp);
         complaintMap.put("state", "private");
         complaintMap.put("post_id", post_id);
+        complaintMap.put("viewers",viewers.toString());
         mDatabase.collection("complaints")
                 .document(uid)
                 .collection("myComplaint")
@@ -214,7 +222,7 @@ public class FileComplaintsFrag extends Fragment {
         builder.setView(view);
         AlertDialog alertDialog = builder.create();
 
-        ComplaintViewers complaintViewers = new ComplaintViewers(getContext(), myList);
+        ComplaintViewers complaintViewers = new ComplaintViewers(getContext(), myList, myUidList);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_viewers);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
