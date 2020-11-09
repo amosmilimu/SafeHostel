@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/amos/programs/android-studio-ide-193.6626763-linux/android-studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/search/baseline_search_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/thumb_down/baseline_thumb_down_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,7 +33,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_search_24" />
+                            <entry key="outputName" value="ic_baseline_thumb_down_24" />
                             <entry key="sourceFile" value="$USER_HOME$/Downloads/Complete Profile/image_place.svg" />
                           </map>
                         </option>
