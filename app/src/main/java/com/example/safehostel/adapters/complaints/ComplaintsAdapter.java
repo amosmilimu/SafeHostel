@@ -52,7 +52,6 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
         this.complaintListModels = complaintListModels;
         this.isHome = isHome;
 
-        pref = context.getSharedPreferences("profile",Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -62,6 +61,7 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
         ListComplaintsBinding binding = DataBindingUtil.
                 inflate(LayoutInflater.from(parent.getContext()),
                         R.layout.list_complaints,parent,false);
+        pref = context.getSharedPreferences("profile",Context.MODE_PRIVATE);
         return new ComplaintsAdapter.ViewHolder(binding);
     }
 
@@ -76,6 +76,11 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
                 .centerCrop()
                 .placeholder(R.drawable.ic_image_place)
                 .into(holder.binding.complaintImage);
+        Glide.with(context)
+                .load(item.getUser_image())
+                .centerCrop()
+                .placeholder(R.drawable.ic_image_place)
+                .into(holder.binding.complaintProfile);
         holder.binding.complaintImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
