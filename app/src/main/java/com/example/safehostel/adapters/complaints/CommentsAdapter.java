@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.safehostel.R;
 import com.example.safehostel.databinding.ListComplaintsCommentsBinding;
 import com.example.safehostel.models.CommentsModel;
@@ -36,8 +37,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final CommentsModel item = commentsModels.get(position);
-        holder.binding.commentorName.setText(item.getCommentorName());
-        holder.binding.commentorComment.setText(item.getCommentorComment());
+        holder.binding.commentorName.setText(item.getUser());
+        holder.binding.commentorComment.setText(item.getComment());
+
+        Glide.with(context)
+                .load(item.getProfile_image())
+                .centerCrop()
+                .placeholder(R.drawable.ic_image_place)
+                .into(holder.binding.commentorProfile);
 
     }
 

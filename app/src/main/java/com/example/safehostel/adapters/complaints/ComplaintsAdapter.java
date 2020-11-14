@@ -183,7 +183,7 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
                     public void onSuccess(Void aVoid) {
                         Log.e(TAG, "onSuccess: successful");
                         Constants.cancelDialog();
-                        linearComment.setVisibility(View.INVISIBLE);
+                        linearComment.setVisibility(View.GONE);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
