@@ -11,9 +11,6 @@ public class HostelRatingsModel {
         this.hostelDownVotes = hostelDownVotes;
     }
 
-    public HostelRatingsModel() {
-
-    }
 
     public String getHostelName() {
         return hostelName;

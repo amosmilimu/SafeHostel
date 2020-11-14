@@ -55,7 +55,7 @@ public class AdminRegistration extends AppCompatActivity {
 
     private void registerUserAuthDetails(){
         if (validations()){
-            Constants.showProgressDialog(context);
+            Constants.showProgressDialog(context,"Registering...");
             mAuth.createUserWithEmailAndPassword(binding.adminEmail.getText().toString(),
                     binding.etRegPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override

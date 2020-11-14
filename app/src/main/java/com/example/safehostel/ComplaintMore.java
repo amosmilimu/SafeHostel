@@ -33,6 +33,7 @@ public class ComplaintMore extends BaseActivity {
     Bundle bundle = new Bundle();
     private DocumentReference reference;
     private String postId;
+    private String userId;
     private static final String TAG = "ComplaintMore";
     ArrayList<String> complaintImageModels = new ArrayList<>();
 
@@ -49,8 +50,9 @@ public class ComplaintMore extends BaseActivity {
 
         if (bundle != null){
             postId = bundle.getString("post_id");
+            userId = bundle.getString("user");
         }
-        reference = db.collection("complaints").document(mUser != null ? mUser.getUid() : "").collection("myComplaint").document(postId);
+        reference = db.collection("complaints").document(userId).collection("myComplaint").document(postId);
     }
 
     @Override

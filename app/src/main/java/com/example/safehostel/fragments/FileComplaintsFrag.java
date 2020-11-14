@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +39,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -78,6 +80,8 @@ public class FileComplaintsFrag extends Fragment {
     private List<String> myList = new ArrayList<>();
     private ArrayList<String> myUidList = new ArrayList<>();
     private ArrayList<String> viewers;
+    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    private SharedPreferences sharedPreferences;
 
 
     @Nullable
@@ -89,6 +93,8 @@ public class FileComplaintsFrag extends Fragment {
                 R.layout.fagment_file_complaint, container, false);
         View v = binding.getRoot();
         context = this.getContext();
+
+        sharedPreferences = context.getSharedPreferences("profile",Context.MODE_PRIVATE);
 
         //firebase
         mStorage = FirebaseStorage.getInstance().getReference("uploads");
@@ -203,6 +209,8 @@ public class FileComplaintsFrag extends Fragment {
         complaintMap.put("state", "private");
         complaintMap.put("post_id", post_id);
         complaintMap.put("viewers",viewers.toString());
+        complaintMap.put("user_id",mUser != null ? mUser.getUid() : "");
+        complaintMap.put("user_image",sharedPreferences.getString("user_image",null));
         mDatabase.collection("complaints")
                 .document(uid)
                 .collection("myComplaint")
@@ -315,7 +323,7 @@ public class FileComplaintsFrag extends Fragment {
 
     private void uploadImages(Uri selectedImageUri) {
         if (selectedImageUri != null) {
-            Constants.showProgressDialog(getContext());
+            Constants.showProgressDialog(getContext(),"Uploading ...");
             StorageTask<UploadTask.TaskSnapshot> reference = mStorage.child(System.currentTimeMillis() + "." + getFileExt(selectedImageUri))
                     .putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override

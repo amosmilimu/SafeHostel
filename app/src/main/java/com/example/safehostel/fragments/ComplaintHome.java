@@ -1,5 +1,7 @@
 package com.example.safehostel.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,11 +15,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.safehostel.R;
 import com.example.safehostel.adapters.complaints.ComplaintsAdapter;
 import com.example.safehostel.databinding.FagmentComplaintHomeBinding;
 import com.example.safehostel.databinding.FagmentFileComplaintBinding;
 import com.example.safehostel.models.ComplaintListModel;
+import com.example.safehostel.models.ProfileModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,8 +47,10 @@ public class ComplaintHome extends Fragment {
     private static final String TAG = "MyComplaints";
     private ListenerRegistration listener;
     private Query reference =  db.collectionGroup("myComplaint");
+    private DocumentReference reference2;
     private boolean isAdmin = false;
     private String role;
+    private ProfileModel profileModel = new ProfileModel();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -74,6 +80,23 @@ public class ComplaintHome extends Fragment {
                 }
             }
         });
+
+
+        reference2 = db.collection("users")
+                .document(mUser != null ? mUser.getUid() : "");
+
+        listener = reference2.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                profileModel = value.toObject(ProfileModel.class);
+                SharedPreferences pref = getContext().getSharedPreferences("profile", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("user_name",profileModel.getUsername());
+                editor.putString("user_image",profileModel.getProfile_image());
+                editor.apply();
+            }
+        });
+
         super.onStart();
     }
 
@@ -93,6 +116,11 @@ public class ComplaintHome extends Fragment {
         binding.recyclerComplaints.setAdapter(mAdapter);
     }
 
+    @Override
+    public void onStop() {
+        listener.remove();
+        super.onStop();
+    }
 }
 
 

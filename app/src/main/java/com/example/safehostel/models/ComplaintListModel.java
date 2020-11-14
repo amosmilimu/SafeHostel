@@ -11,6 +11,8 @@ public class ComplaintListModel {
     private String state;
     private String post_id;
     private String viewers;
+    private String user_id;
+    private String user_image;
 
     public ComplaintListModel() {
     }
@@ -66,5 +68,13 @@ public class ComplaintListModel {
 
     public String getViewers() {
         return viewers;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public String getUser_image() {
+        return user_image;
     }
 }
