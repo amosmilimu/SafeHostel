@@ -128,7 +128,7 @@ public class MyComplaints extends Fragment {
                     String replace1 = replace.replace("]", "");
                     List<String> myList = new ArrayList<String>(Arrays.asList(replace1.split(",")));
 
-                    if (myList.contains(mUser != null ? mUser.getUid() : "")) {
+                    if (myList.contains(mUser != null ? mUser.getUid() : "") || myList.contains(mUser != null ? " "+mUser.getUid() : "")) {
                         list_complaintListModels.add(complaintListModel);
                     }
                 }

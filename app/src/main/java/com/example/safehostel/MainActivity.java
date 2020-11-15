@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }else {
                     navigationView.getMenu().findItem(R.id.settings).setVisible(false);
                 }
+
+                if(role.equals("admin"));
             }
         });
     }

@@ -197,6 +197,8 @@ public class FileComplaintsFrag extends Fragment {
         for (QueryDocumentSnapshot documentSnapshot: value) {
             myList.add(documentSnapshot.get("username").toString());
             myUidList.add(documentSnapshot.get("user_uid").toString());
+            Log.e(TAG, "iterateThroughAdmins: "+myList );
+            Log.e(TAG, "iterateThroughAdmins: "+myUidList );
         }
     }
 

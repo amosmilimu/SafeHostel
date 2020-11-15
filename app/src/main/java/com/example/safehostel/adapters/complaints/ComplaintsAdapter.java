@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.type.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -176,6 +177,7 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
         commentMap.put("post",post_id);
         commentMap.put("user",pref.getString("user_name","not given"));
         commentMap.put("profile_image",pref.getString("user_image",null));
+        commentMap.put("time", System.currentTimeMillis());
 
         db.collection("comment").document().set(commentMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
