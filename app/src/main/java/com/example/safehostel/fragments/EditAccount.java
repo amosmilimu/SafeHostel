@@ -69,6 +69,7 @@ public class EditAccount extends Fragment {
     private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private static final String TAG = "EditAccount";
     private ProfileModel profileModel = new ProfileModel();
+    private SharedPreferences pref;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,6 +84,8 @@ public class EditAccount extends Fragment {
                 selectLogo();
             }
         });
+        pref = getContext().getSharedPreferences("profile", Context.MODE_PRIVATE);
+        binding.userUname.setText(pref.getString("user_name","not provided"));
 
         return view;
     }
@@ -96,7 +99,7 @@ public class EditAccount extends Fragment {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 profileModel = value.toObject(ProfileModel.class);
-                SharedPreferences pref = getContext().getSharedPreferences("profile", Context.MODE_PRIVATE);
+                pref = getContext().getSharedPreferences("profile", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("user_name",profileModel.getUsername());
                 editor.putString("user_image",profileModel.getProfile_image());

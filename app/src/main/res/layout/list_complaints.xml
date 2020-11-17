@@ -98,7 +98,7 @@
                             android:id="@+id/btnPrivate"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:backgroundTint="@color/orange"
+                            android:backgroundTint="@color/links"
                             android:text="@string/private_text"
                             android:textColor="@android:color/white"
                             android:layout_height="match_parent"/>

@@ -21,5 +21,36 @@
 
     </de.hdodenhof.circleimageview.CircleImageView>
 
+    <EditText
+        android:id="@+id/user_uname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/et_backdesign"
+        android:hint="Name"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+    <Button
+        android:id="@+id/btnRegisterAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/btn_backdesign"
+        android:fontFamily="@font/agaramondpro_regular"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:text="Submit"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_uname" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

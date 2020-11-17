@@ -210,7 +210,7 @@ public class FileComplaintsFrag extends Fragment {
         complaintMap.put("date", timeStamp);
         complaintMap.put("state", "private");
         complaintMap.put("post_id", post_id);
-        complaintMap.put("viewers",viewers.toString());
+        complaintMap.put("viewers",viewers!=null?viewers.toString():null);
         complaintMap.put("user_id",mUser != null ? mUser.getUid() : "");
         complaintMap.put("user_image",sharedPreferences.getString("user_image",null));
         mDatabase.collection("complaints")

@@ -15,9 +15,10 @@
         android:layout_width="wrap_content"
         android:text="File Your Complaint"
         android:textSize="15sp"
+        android:textColor="@color/links"
         android:drawableEnd="@drawable/ic_baseline_info_24"
         android:drawablePadding="5dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/agaramondpro_regular"
         android:layout_height="wrap_content"/>
 
@@ -118,7 +119,7 @@
     <EditText
         android:id="@+id/et_complaint_desc"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/et_backdesign"
         android:fontFamily="@font/agaramondpro_regular"
@@ -130,16 +131,20 @@
         android:layout_width="match_parent"
         android:text="Select Viewers"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textSize="24sp"
+        android:textColor="@color/contact_background"
+        android:backgroundTint="@color/links"
         android:layout_height="wrap_content"/>
     <Button
         android:id="@+id/btnSubmitDetails"
         android:layout_width="match_parent"
         android:text="Submit"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textSize="24sp"
+        android:textColor="@color/contact_background"
+        android:backgroundTint="@color/links"
         android:layout_height="wrap_content"/>
 
 

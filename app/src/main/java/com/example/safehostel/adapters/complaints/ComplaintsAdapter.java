@@ -1,6 +1,7 @@
 package com.example.safehostel.adapters.complaints;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.Editable;
@@ -13,12 +14,15 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.safehostel.ComplaintMore;
+import com.example.safehostel.MainActivity;
 import com.example.safehostel.R;
+import com.example.safehostel.authentication.LoginActivity;
 import com.example.safehostel.constants.Constants;
 import com.example.safehostel.databinding.ListComplaintsBinding;
 import com.example.safehostel.models.ComplaintListModel;
@@ -95,7 +99,7 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
 
         if(item.getState().equals("public")) {
             holder.binding.btnPublic.setBackgroundTintList(
-                    context.getResources().getColorStateList(R.color.orange));
+                    context.getResources().getColorStateList(R.color.links));
             holder.binding.btnPublic.setTextColor(
                     context.getResources().getColor(R.color.contact_background));
             holder.binding.btnPrivate.setBackgroundTintList(
@@ -104,7 +108,7 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
                     context.getResources().getColor(R.color.semi_black));
         } else {
             holder.binding.btnPrivate.setBackgroundTintList(
-                    context.getResources().getColorStateList(R.color.orange));
+                    context.getResources().getColorStateList(R.color.links));
             holder.binding.btnPrivate.setTextColor(
                     context.getResources().getColor(R.color.contact_background));
             holder.binding.btnPublic.setBackgroundTintList(
@@ -119,7 +123,7 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
                 updateVisibility(item,"private");
 
                 holder.binding.btnPrivate.setBackgroundTintList(
-                        context.getResources().getColorStateList(R.color.orange));
+                        context.getResources().getColorStateList(R.color.links));
                 holder.binding.btnPrivate.setTextColor(
                         context.getResources().getColor(R.color.contact_background));
 
@@ -137,7 +141,7 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
                 updateVisibility(item,"public");
 
                 holder.binding.btnPublic.setBackgroundTintList(
-                        context.getResources().getColorStateList(R.color.orange));
+                        context.getResources().getColorStateList(R.color.links));
                 holder.binding.btnPublic.setTextColor(
                         context.getResources().getColor(R.color.contact_background));
 
@@ -165,6 +169,13 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
                 } else {
                     holder.binding.commentText.setError("Kindly provide a comment");
                 }
+            }
+        });
+
+        holder.binding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callDialog(item);
             }
         });
 
@@ -213,6 +224,31 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
                 Log.e(TAG, "onSuccess: faile"+e.getMessage(),e);
             }
         });
+    }
+
+    private void callDialog(final ComplaintListModel item){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        reference = db.collection("complaints")
+                                .document(mUser != null ? mUser.getUid() : "")
+                                .collection("myComplaint")
+                                .document(item.getPost_id());
+                        reference.delete();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Kindly ensure that this complaint has been solved to your satisfaction\n" +
+                "before you cancel it.\nThis action cannot be undone\nProceed with cancellation? ").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     @Override

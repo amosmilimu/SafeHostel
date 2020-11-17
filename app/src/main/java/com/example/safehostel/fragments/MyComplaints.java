@@ -17,6 +17,7 @@ import com.example.safehostel.R;
 import com.example.safehostel.adapters.complaints.ComplaintsAdapter;
 import com.example.safehostel.databinding.FagmentComplaintHomeBinding;
 import com.example.safehostel.databinding.FagmentFileComplaintBinding;
+import com.example.safehostel.databinding.FagmentMyComplaintsBinding;
 import com.example.safehostel.models.ComplaintListModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MyComplaints extends Fragment {
-    private FagmentComplaintHomeBinding binding;
+    private FagmentMyComplaintsBinding binding;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser mUser = mAuth.getCurrentUser();
@@ -52,7 +53,7 @@ public class MyComplaints extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fagment_complaint_home, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fagment_my_complaints, container, false);
         View v = binding.getRoot();
         Log.e(TAG, "onCreate: oooooooooooooooooooooooooncrrrrrreate");
         checkURoles();
@@ -136,7 +137,7 @@ public class MyComplaints extends Fragment {
                 list_complaintListModels.add(complaintListModel);
             }
         }
-        ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels, false);
+        ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels, isAdmin);
         binding.recyclerComplaints.setHasFixedSize(true);
         binding.recyclerComplaints.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerComplaints.setAdapter(mAdapter);

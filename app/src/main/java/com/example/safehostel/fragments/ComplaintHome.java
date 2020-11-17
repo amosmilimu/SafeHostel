@@ -88,12 +88,14 @@ public class ComplaintHome extends Fragment {
         listener = reference2.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                profileModel = value.toObject(ProfileModel.class);
-                SharedPreferences pref = getContext().getSharedPreferences("profile", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("user_name",profileModel.getUsername());
-                editor.putString("user_image",profileModel.getProfile_image());
-                editor.apply();
+                if(value!=null){
+                    profileModel = value.toObject(ProfileModel.class);
+                    SharedPreferences pref = getContext().getSharedPreferences("profile", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("user_name",profileModel.getUsername());
+                    editor.putString("user_image",profileModel.getProfile_image());
+                    editor.apply();
+                }
             }
         });
 
