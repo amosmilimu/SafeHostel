@@ -1,6 +1,7 @@
 package com.example.safehostel;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -18,9 +19,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +37,16 @@ public class ComplaintMore extends BaseActivity {
     private ActivityComplaintMoreBinding binding;
     private Toolbar toolbar;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-    Bundle bundle = new Bundle();
+    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    private Bundle bundle = new Bundle();
     private DocumentReference reference;
+    private CollectionReference reference1;
     private String postId;
+    private String userId;
     private static final String TAG = "ComplaintMore";
-    ArrayList<String> complaintImageModels = new ArrayList<>();
+    private ArrayList<String> complaintImageModels = new ArrayList<>();
+    private ListenerRegistration listener;
+    private CommentsModel commentsModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +57,13 @@ public class ComplaintMore extends BaseActivity {
         bundle = getIntent().getExtras();
 
         setUpToolBar(binding.toolbar);
-        setupCommentsRecycler();
 
         if (bundle != null){
             postId = bundle.getString("post_id");
+            userId = bundle.getString("user");
         }
-        reference = db.collection("complaints").document(mUser != null ? mUser.getUid() : "").collection("myComplaint").document(postId);
+        reference = db.collection("complaints").document(userId).collection("myComplaint").document(postId);
+        reference1 = db.collection("comment");
     }
 
     @Override
@@ -82,19 +95,22 @@ public class ComplaintMore extends BaseActivity {
 
             }
         });
+
+        listener = reference1.whereEqualTo("post",postId).orderBy("time", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                setupCommentsRecycler(value);
+            }
+        });
     }
 
-    private void setupCommentsRecycler() {
+    private void setupCommentsRecycler(QuerySnapshot value) {
         List<CommentsModel> commentsModels = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            CommentsModel item = new CommentsModel(
-                  "Amos",
-                  "Url",
-                  "lorem_ipsum\"Lorem ipsum is placeholder text commonly used in the graphic, print,\n" +
-                          "and publishing industries for previewing layouts and visual mockups."
-            );
-            commentsModels.add(item);
+        for (QueryDocumentSnapshot documentSnapshots: value) {
+            commentsModel = documentSnapshots.toObject(CommentsModel.class);
+            commentsModels.add(commentsModel);
         }
+
         CommentsAdapter mAdapter = new CommentsAdapter(this,
                 commentsModels);
         binding.recyclerComments.setHasFixedSize(true);
@@ -114,5 +130,9 @@ public class ComplaintMore extends BaseActivity {
         binding.recyclerComplaintsImages.setAdapter(mAdapter);
     }
 
-
+    @Override
+    protected void onStop() {
+        listener.remove();
+        super.onStop();
+    }
 }

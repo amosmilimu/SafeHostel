@@ -6,9 +6,9 @@ import android.content.Context;
 public class Constants {
     private static ProgressDialog dialog;
 
-    public static void showProgressDialog(Context co){
+    public static void showProgressDialog(Context co,String message){
         dialog = new ProgressDialog(co);
-        dialog.setTitle("Loading...");
+        dialog.setTitle(message);
         dialog.setMessage("Please wait...");
         dialog.show();
     }

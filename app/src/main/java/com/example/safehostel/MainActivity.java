@@ -51,8 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         mainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
-        SharedPreferences sharedPreferences = getApplicationContext()
-                .getSharedPreferences("extreme", 0);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("profile",MODE_PRIVATE);
         
         checkURoles();
 
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.navHeaderName);
-        navUsername.setText(sharedPreferences.getString("username","Default"));
+        navUsername.setText(sharedPreferences.getString("user_name","Default"));
 
         navigationView.setNavigationItemSelectedListener(this);
         
@@ -116,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     navigationView.getMenu().findItem(R.id.settings).setVisible(true);
                 }else {
                     navigationView.getMenu().findItem(R.id.settings).setVisible(false);
+                }
+
+                if(role.equals("admin")){
+                    navigationView.getMenu().findItem(R.id.add_complaint).setVisible(false);
                 }
             }
         });

@@ -1,38 +1,34 @@
 package com.example.safehostel.models;
 
 public class CommentsModel {
-    private String commentorName;
-    private String commentorImage;
-    private String commentorComment;
+    private String comment;
+    private String post;
+    private String profile_image;
+    private String user;
 
-    public CommentsModel(String commentorName, String commentorImage,
-                         String commentorComment) {
-        this.commentorName = commentorName;
-        this.commentorImage = commentorImage;
-        this.commentorComment = commentorComment;
+    public CommentsModel() {
     }
 
-    public String getCommentorName() {
-        return commentorName;
+    public CommentsModel(String comment, String post, String profile_image, String user) {
+        this.comment = comment;
+        this.post = post;
+        this.profile_image = profile_image;
+        this.user = user;
     }
 
-    public void setCommentorName(String commentorName) {
-        this.commentorName = commentorName;
+    public String getComment() {
+        return comment;
     }
 
-    public String getCommentorImage() {
-        return commentorImage;
+    public String getPost() {
+        return post;
     }
 
-    public void setCommentorImage(String commentorImage) {
-        this.commentorImage = commentorImage;
+    public String getProfile_image() {
+        return profile_image;
     }
 
-    public String getCommentorComment() {
-        return commentorComment;
-    }
-
-    public void setCommentorComment(String commentorComment) {
-        this.commentorComment = commentorComment;
+    public String getUser() {
+        return user;
     }
 }
