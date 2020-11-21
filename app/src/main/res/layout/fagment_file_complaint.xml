@@ -14,7 +14,7 @@
         android:id="@+id/file_complaint"
         android:layout_width="wrap_content"
         android:text="File Your Complaint"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textColor="@color/links"
         android:drawableEnd="@drawable/ic_baseline_info_24"
         android:drawablePadding="5dp"

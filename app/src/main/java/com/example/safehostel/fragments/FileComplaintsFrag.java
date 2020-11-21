@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -77,7 +78,7 @@ public class FileComplaintsFrag extends Fragment {
     private static final String TAG = "FileComplaintsFrag";
     private CollectionReference reference = mDatabase.collection("users");
     private ListenerRegistration listener;
-    private List<String> myList = new ArrayList<>();
+    private List<String> myList;
     private ArrayList<String> myUidList = new ArrayList<>();
     private ArrayList<String> viewers;
     private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -184,6 +185,7 @@ public class FileComplaintsFrag extends Fragment {
                     Log.e(TAG, "onEvent: " + error.getMessage());
                 } else {
                     if (value != null){
+                        myList = new ArrayList<>();
                         iterateThroughAdmins(value);
                     }
 
@@ -229,8 +231,15 @@ public class FileComplaintsFrag extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.list_complaint_viewers, null);
+        Button okaybtn = view.findViewById(R.id.okay);
         builder.setView(view);
-        AlertDialog alertDialog = builder.create();
+        final AlertDialog alertDialog = builder.create();
+        okaybtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
 
         ComplaintViewers complaintViewers = new ComplaintViewers(getContext(), myList, myUidList);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_viewers);

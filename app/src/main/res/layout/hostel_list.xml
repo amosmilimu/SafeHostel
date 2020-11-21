@@ -13,96 +13,115 @@
             android:layout_height="match_parent"
             tools:src="@drawable/ic_baseline_thumb_down_24" />
 
-        <LinearLayout
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Hostel Name:"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text=" "
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Hostel Upvotes:"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text=" "
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Down Votes:"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text=" "
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Comments:"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:layout_height="wrap_content"/>
+
+
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tv_hostel_name"
+                    android:layout_width="wrap_content"
+                    android:text="Qwetu hostel"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text=" "
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/tv_upvotes"
+                    android:layout_width="wrap_content"
+                    android:text="20"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text=" "
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/tv_downvotes"
+                    android:layout_width="wrap_content"
+                    android:text="101"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text=" "
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="View"
+                    android:layout_height="wrap_content"/>
+            </TableLayout>
+
+        <TableLayout
             android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="5dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Hostel Name:"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Hostel Upvotes:"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="bottom"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Down Votes:"
-                android:layout_gravity="bottom"
-                android:gravity="bottom"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Comments:"
-                android:layout_gravity="bottom"
-                android:gravity="bottom"
-                android:layout_height="wrap_content"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="5dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_hostel_name"
-                android:layout_width="wrap_content"
-                android:text="Qwetu hostel"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/tv_upvotes"
-                android:layout_width="wrap_content"
-                android:text="20"
-
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/tv_downvotes"
-                android:layout_width="wrap_content"
-                android:text="101"
-
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="View"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             android:layout_height="match_parent">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:text=""
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:text=" "
                 android:layout_height="wrap_content"/>
 
             <ImageView
                 android:id="@+id/ic_upvote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:src="@drawable/ic_baseline_thumb_up_24"
                 android:text="20" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text=" "
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:id="@+id/ic_downvote"
@@ -114,8 +133,7 @@
                 android:layout_width="wrap_content"
                 android:text=""
                 android:layout_height="wrap_content"/>
+        </TableLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
 </layout>
