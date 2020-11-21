@@ -1,38 +1,34 @@
 package com.example.safehostel.models;
 
 public class HostelRatingsModel {
-    private String hostelName;
-    private String hostelUpVotes;
-    private String hostelDownVotes;
+    private String name;
+    private String upvotes;
+    private String downvotes;
+    private String image;
+    private String docid;
 
-    public HostelRatingsModel(String hostelName, String hostelUpVotes, String hostelDownVotes) {
-        this.hostelName = hostelName;
-        this.hostelUpVotes = hostelUpVotes;
-        this.hostelDownVotes = hostelDownVotes;
+
+    public HostelRatingsModel() {
     }
 
 
-    public String getHostelName() {
-        return hostelName;
+    public String getName() {
+        return name;
     }
 
-    public void setHostelName(String hostelName) {
-        this.hostelName = hostelName;
+    public String getUpvotes() {
+        return upvotes;
     }
 
-    public String getHostelUpVotes() {
-        return hostelUpVotes;
+    public String getDownvotes() {
+        return downvotes;
     }
 
-    public void setHostelUpVotes(String hostelUpVotes) {
-        this.hostelUpVotes = hostelUpVotes;
+    public String getImage() {
+        return image;
     }
 
-    public String getHostelDownVotes() {
-        return hostelDownVotes;
-    }
-
-    public void setHostelDownVotes(String hostelDownVotes) {
-        this.hostelDownVotes = hostelDownVotes;
+    public String getDocid() {
+        return docid;
     }
 }

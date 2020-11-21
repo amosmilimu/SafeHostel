@@ -16,13 +16,22 @@ import com.example.safehostel.R;
 import com.example.safehostel.adapters.hostels.HostelRatingsAdapter;
 import com.example.safehostel.databinding.FagmentHostleRatingsBinding;
 import com.example.safehostel.models.HostelRatingsModel;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 public class HostelRatings extends Fragment {
     private FagmentHostleRatingsBinding binding;
     private ArrayList<HostelRatingsModel> hostelRatingsModels = new ArrayList<>();
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ListenerRegistration listener;
+    private CollectionReference reference = db.collection("hostels");
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -32,20 +41,31 @@ public class HostelRatings extends Fragment {
                 R.layout.fagment_hostle_ratings,
                 container,false);
         View view = binding.getRoot();
-        initiateRecycler();
         return view;
     }
 
-    private void initiateRecycler() {
+    @Override
+    public void onStart() {
 
-        for (int i = 0; i <4; i++) {
-            HostelRatingsModel model = new HostelRatingsModel(
-                   "Qwetu",
-                    "4",
-                    "4"
-            );
+        listener = reference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                initiateRecycler(value);
+            }
+        });
+
+        super.onStart();
+    }
+
+
+    private void initiateRecycler(QuerySnapshot value) {
+        HostelRatingsModel model;
+
+        for (QueryDocumentSnapshot documentSnapshot: value) {
+            model = documentSnapshot.toObject(HostelRatingsModel.class);
             hostelRatingsModels.add(model);
         }
+
 
         RecyclerView recyclerView = binding.recyclerRatings;
         HostelRatingsAdapter adapter = new HostelRatingsAdapter(getContext(),hostelRatingsModels);
@@ -53,5 +73,11 @@ public class HostelRatings extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
+    }
+
+    @Override
+    public void onStop() {
+        listener.remove();
+        super.onStop();
     }
 }

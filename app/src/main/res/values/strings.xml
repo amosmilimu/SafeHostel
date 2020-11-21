@@ -56,8 +56,11 @@
     <string-array name="array_hostels">
         <item>Select Hostel</item>
         <item>Qwetu</item>
-        <item>Kwao</item>
-        <item>Kwenu</item>
+        <item>Cuea</item>
+        <item>Nazarene</item>
+        <item>Our lady mary</item>
+        <item>Silver</item>
+        <item>Mirvins</item>
     </string-array>
 
     <string-array name="array_schools">

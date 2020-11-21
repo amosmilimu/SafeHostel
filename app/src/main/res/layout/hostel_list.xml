@@ -10,7 +10,7 @@
         <ImageView
             android:id="@+id/hosteImage"
             android:layout_width="97dp"
-            android:layout_height="95dp"
+            android:layout_height="match_parent"
             tools:src="@drawable/ic_baseline_thumb_down_24" />
 
         <LinearLayout
@@ -96,6 +96,7 @@
                 android:layout_height="wrap_content"/>
 
             <ImageView
+                android:id="@+id/ic_upvote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -104,6 +105,7 @@
                 android:text="20" />
 
             <ImageView
+                android:id="@+id/ic_downvote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_thumb_down_24"
