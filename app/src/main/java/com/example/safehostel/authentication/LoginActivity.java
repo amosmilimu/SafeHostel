@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.safehostel.MainActivity;
 import com.example.safehostel.R;
+import com.example.safehostel.constants.Constants;
 import com.example.safehostel.databinding.ActivityLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference reference;
+    private FirebaseUser mUser = mAuth.getCurrentUser();
     private String uid;
 
 
@@ -52,6 +54,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
+
+        if (mUser != null) {
+            sendUserToMain();
+        }
 
         //setting onclick listeners
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                   if (task.isSuccessful()){
 
                       checkUserRole();
-                      sendUserToMain();
 
                   }else {
                       Toast.makeText(LoginActivity.this,"Error: "+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
@@ -102,19 +107,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkUserRole() {
+      Constants.showProgressDialog(this,"Checking roles...");
         reference = db.collection("users").document(mAuth.getCurrentUser().getUid());
         reference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.get("role").equals("admin")){
                     if(documentSnapshot.get("verified").equals("false")){
+                        Constants.cancelDialog();
                         startActivity(new Intent(LoginActivity.this,AdminWaiting.class));
                         finish();
                     }else {
                         sendUserToMain();
+                        Constants.cancelDialog();
                     }
                 }else {
                     sendUserToMain();
+                    Constants.cancelDialog();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

@@ -52,16 +52,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("profile",MODE_PRIVATE);
-        
+
         checkURoles();
 
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
+/*        mUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mUser!=null&&mUser.isEmailVerified()){
             Toast.makeText(MainActivity.this,"",Toast.LENGTH_SHORT).show();
         }else {
             startActivity(new Intent(MainActivity.this,LoginActivity.class));
             finish();
-        }
+        }*/
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,11 +81,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navUsername.setText(sharedPreferences.getString("user_name","Default"));
 
         navigationView.setNavigationItemSelectedListener(this);
-        
+
 
         ActionBarDrawerToggle toggle =
                 new ActionBarDrawerToggle(this,drawer,toolbar,
-                R.string.navigation_drawer_open,
+                        R.string.navigation_drawer_open,
                         R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container,
-                    new ComplaintHome()).commit();
+                            new ComplaintHome()).commit();
 
             navigationView.setCheckedItem(R.id.home_frag);}
     }
@@ -108,23 +108,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .getUid():"document");
         reference.get().addOnSuccessListener(
                 new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                role = documentSnapshot.get("role").toString();
-                if (role.equals("super_admin")){
-                    navigationView.getMenu().findItem(R.id.settings).setVisible(true);
-                }else {
-                    navigationView.getMenu().findItem(R.id.settings).setVisible(false);
-                }
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        role = documentSnapshot.get("role").toString();
+                        if (role.equals("super_admin")){
+                            navigationView.getMenu().findItem(R.id.settings).setVisible(true);
+                        }else {
+                            navigationView.getMenu().findItem(R.id.settings).setVisible(false);
+                        }
 
-                if(role.equals("admin")){
-                    navigationView.getMenu().findItem(R.id.add_complaint).setVisible(false);
-                }
-            }
-        });
+                        if(role.equals("admin")){
+                            navigationView.getMenu().findItem(R.id.add_complaint).setVisible(false);
+                        }
+                    }
+                });
     }
 
-    @SuppressLint("NonConstantResourceId")
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
