@@ -13,22 +13,12 @@ public class ComplaintListModel {
     private String viewers;
     private String user_id;
     private String user_image;
+    private Boolean solved;
+    private String by;
 
     public ComplaintListModel() {
     }
 
-    public ComplaintListModel(String title, String date, String imageUrl1, String imageUrl2, String imageUrl3, String imageUrl4, String description, String state, String post_id, String viewers) {
-        this.title = title;
-        this.date = date;
-        this.imageUrl1 = imageUrl1;
-        this.imageUrl2 = imageUrl2;
-        this.imageUrl3 = imageUrl3;
-        this.imageUrl4 = imageUrl4;
-        this.description = description;
-        this.state = state;
-        this.post_id = post_id;
-        this.viewers = viewers;
-    }
 
     public String getTitle() {
         return title;
@@ -76,5 +66,13 @@ public class ComplaintListModel {
 
     public String getUser_image() {
         return user_image;
+    }
+
+    public Boolean getSolved() {
+        return solved;
+    }
+
+    public String getBy() {
+        return by;
     }
 }

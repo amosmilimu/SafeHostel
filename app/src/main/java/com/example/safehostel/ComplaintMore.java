@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toolbar;
 
 import com.example.safehostel.adapters.complaints.CommentsAdapter;
@@ -79,6 +80,12 @@ public class ComplaintMore extends BaseActivity {
                     if(complaintListModel != null){
                         binding.complaintTitle.setText(complaintListModel.getTitle());
                         binding.complaintMoreDesc.setText(complaintListModel.getDescription());
+
+                        if(complaintListModel.getSolved()) {
+                            binding.tlSolved.setVisibility(View.VISIBLE);
+                            binding.tvSolvedState.setText(String.valueOf(complaintListModel.getSolved()));
+                            binding.tvByState.setText(complaintListModel.getBy());
+                        }
 
                         complaintImageModels.add(complaintListModel.getImageUrl1());
                         complaintImageModels.add(complaintListModel.getImageUrl2());

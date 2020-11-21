@@ -52,6 +52,7 @@
         Thank you for registering as an admin. Your account will be verified and approved within 12 - 24 hours. Kindly
         check again after the specified period of time. You will be able to log in.
     </string>
+    <string name="solved">Mark complaint as solved</string>
 
     <string-array name="array_hostels">
         <item>Select Hostel</item>

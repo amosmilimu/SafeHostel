@@ -37,6 +37,55 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <TableLayout
+                    android:id="@+id/tl_solved"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_solved"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/agaramondpro_bold"
+                            android:textColor="@color/colorPrimary"
+                            android:text="Solved:" />
+
+                        <TextView
+                            android:id="@+id/tv_solved_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/agaramondpro_bold"
+                            android:text="True" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_by"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/agaramondpro_bold"
+                            android:textColor="@color/colorPrimary"
+                            android:text="By:" />
+
+                        <TextView
+                            android:id="@+id/tv_by_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/agaramondpro_bold"
+                            android:text="Amos" />
+
+                    </TableRow>
+                </TableLayout>
+
+
                 <TextView
                     android:id="@+id/complaint_more_desc"
                     android:layout_width="wrap_content"

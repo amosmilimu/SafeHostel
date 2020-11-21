@@ -73,7 +73,7 @@ public class FileComplaintsFrag extends Fragment {
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private Context context;
     private int chosenImage = 0;
-    private Map<Object, String> complaintMap = new HashMap<>();
+    private Map<String, Object> complaintMap = new HashMap<>();
     private String timeStamp;
     private static final String TAG = "FileComplaintsFrag";
     private CollectionReference reference = mDatabase.collection("users");
@@ -205,6 +205,7 @@ public class FileComplaintsFrag extends Fragment {
     }
 
     private void uploadComplaintToFirestore() {
+        Constants.showProgressDialog(getContext(),"Uploading...");
         String post_id = String.valueOf(System.currentTimeMillis());
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         complaintMap.put("title", binding.etComplaintTitle.getText().toString());
@@ -212,6 +213,8 @@ public class FileComplaintsFrag extends Fragment {
         complaintMap.put("date", timeStamp);
         complaintMap.put("state", "private");
         complaintMap.put("post_id", post_id);
+        complaintMap.put("solved", false);
+        complaintMap.put("by", "non");
         complaintMap.put("viewers",viewers!=null?viewers.toString():null);
         complaintMap.put("user_id",mUser != null ? mUser.getUid() : "");
         complaintMap.put("user_image",sharedPreferences.getString("user_image",null));
@@ -219,12 +222,17 @@ public class FileComplaintsFrag extends Fragment {
                 .document(uid)
                 .collection("myComplaint")
                 .document(post_id).set(complaintMap)//TODO add doc path
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        //show feedback when action completes
+                    public void onSuccess(Void aVoid) {
+                        Constants.cancelDialog();
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Constants.cancelDialog();
+            }
+        });
     }
 
     private void showViewersDialog() {

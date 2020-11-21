@@ -31,9 +31,10 @@
                 </de.hdodenhof.circleimageview.CircleImageView>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
 
@@ -51,6 +52,14 @@
                         android:text="24/june/1940"
                         android:textSize="12sp" />
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imview_more"
+                    android:layout_width="0dp"
+                    android:layout_gravity="end"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/ic_baseline_more_vert_24"
+                    android:layout_height="match_parent"/>
 
             </LinearLayout>
 

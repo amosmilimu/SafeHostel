@@ -112,7 +112,7 @@ public class ComplaintHome extends Fragment {
             }
 
         }
-        ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels,true);
+        ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels,true,"any");
         binding.recyclerComplaints.setHasFixedSize(true);
         binding.recyclerComplaints.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerComplaints.setAdapter(mAdapter);

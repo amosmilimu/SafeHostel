@@ -137,7 +137,7 @@ public class MyComplaints extends Fragment {
                 list_complaintListModels.add(complaintListModel);
             }
         }
-        ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels, isAdmin);
+        ComplaintsAdapter mAdapter = new ComplaintsAdapter(getContext(), list_complaintListModels, isAdmin,"admin");
         binding.recyclerComplaints.setHasFixedSize(true);
         binding.recyclerComplaints.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerComplaints.setAdapter(mAdapter);

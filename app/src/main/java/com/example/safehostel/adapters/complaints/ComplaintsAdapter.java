@@ -7,15 +7,20 @@ import android.content.SharedPreferences;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -39,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.ViewHolder> {
+public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.ViewHolder>{
 
     private Context context;
     private List<ComplaintListModel> complaintListModels;
@@ -49,13 +54,14 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
     private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private SharedPreferences pref;
     private static final String TAG = "ComplaintsAdapter";
-    private List<Boolean> mSbStates;
+    private String role;
     private Map<String, Object> commentMap = new HashMap();
     public ComplaintsAdapter(Context context,
-                             List<ComplaintListModel> complaintListModels,boolean isHome) {
+                             List<ComplaintListModel> complaintListModels,boolean isHome, String role) {
         this.context = context;
         this.complaintListModels = complaintListModels;
         this.isHome = isHome;
+        this.role = role;
 
     }
 
@@ -179,8 +185,45 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
             }
         });
 
+        holder.binding.imviewMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopup(item);
+            }
+        });
+
     }
 
+    private void showPopup(final ComplaintListModel item) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.post_popup, null);
+        Button okay_btn = view.findViewById(R.id.okay);
+        CheckBox checkBox = view.findViewById(R.id.chkSolved);
+        builder.setView(view);
+        final android.app.AlertDialog alertDialog = builder.create();
+        checkBox.setChecked(item.getSolved());
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    updateSolved(item,b);
+                } else {
+                    updateSolved(item,b);
+                }
+            }
+        });
+
+        okay_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+
+        alertDialog.show();
+    }
 
     private void _sendComment(String text, String post_id, final LinearLayout linearComment) {
         Constants.showProgressDialog(context,"Adding comment...");
@@ -226,6 +269,28 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
         });
     }
 
+
+
+    private void updateSolved(ComplaintListModel item, boolean b) {
+        reference = db.collection("complaints")
+                .document(mUser != null ? mUser.getUid() : "")
+                .collection("myComplaint")
+                .document(item.getPost_id());
+        reference.update("solved",b,"by",pref.getString("user_name","non"))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.e(TAG, "onSuccess: successful");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onSuccess: faile"+e.getMessage(),e);
+            }
+        });
+    }
+
+
     private void callDialog(final ComplaintListModel item){
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -264,9 +329,18 @@ public class ComplaintsAdapter extends RecyclerView.Adapter<ComplaintsAdapter.Vi
             this.binding = listComplaintsBinding;
 
             if (isHome) {
-                listComplaintsBinding.btnPrivate.setVisibility(View.INVISIBLE);
-                listComplaintsBinding.btnPublic.setVisibility(View.INVISIBLE);
-                listComplaintsBinding.cancel.setVisibility(View.INVISIBLE);
+                if(role.equals("admin")){
+                    listComplaintsBinding.btnPrivate.setVisibility(View.INVISIBLE);
+                    listComplaintsBinding.btnPublic.setVisibility(View.INVISIBLE);
+                    listComplaintsBinding.cancel.setVisibility(View.INVISIBLE);
+                    listComplaintsBinding.imviewMore.setVisibility(View.VISIBLE);
+                } else {
+                    listComplaintsBinding.btnPrivate.setVisibility(View.INVISIBLE);
+                    listComplaintsBinding.btnPublic.setVisibility(View.INVISIBLE);
+                    listComplaintsBinding.cancel.setVisibility(View.INVISIBLE);
+                    listComplaintsBinding.imviewMore.setVisibility(View.INVISIBLE);
+                }
+
             } else {
                 listComplaintsBinding.btnPrivate.setVisibility(View.VISIBLE);
                 listComplaintsBinding.btnPublic.setVisibility(View.VISIBLE);
