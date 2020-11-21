@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class HostelRatings extends Fragment {
     private FagmentHostleRatingsBinding binding;
-    private ArrayList<HostelRatingsModel> hostelRatingsModels = new ArrayList<>();
+    private ArrayList<HostelRatingsModel> hostelRatingsModels;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListenerRegistration listener;
     private CollectionReference reference = db.collection("hostels");
@@ -50,6 +50,7 @@ public class HostelRatings extends Fragment {
         listener = reference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                hostelRatingsModels = new ArrayList<>();
                 initiateRecycler(value);
             }
         });
