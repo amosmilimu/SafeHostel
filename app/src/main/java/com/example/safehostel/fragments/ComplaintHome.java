@@ -47,7 +47,6 @@ public class ComplaintHome extends Fragment {
     private static final String TAG = "MyComplaints";
     private ListenerRegistration listener;
     private Query reference =  db.collectionGroup("myComplaint");
-    private DocumentReference reference2;
     private boolean isAdmin = false;
     private String role;
     private ProfileModel profileModel = new ProfileModel();
@@ -81,23 +80,6 @@ public class ComplaintHome extends Fragment {
             }
         });
 
-
-        reference2 = db.collection("users")
-                .document(mUser != null ? mUser.getUid() : "");
-
-        listener = reference2.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(value!=null){
-                    profileModel = value.toObject(ProfileModel.class);
-                    SharedPreferences pref = getContext().getSharedPreferences("profile", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("user_name",profileModel.getUsername());
-                    editor.putString("user_image",profileModel.getProfile_image());
-                    editor.apply();
-                }
-            }
-        });
 
         super.onStart();
     }

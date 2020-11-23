@@ -1,6 +1,7 @@
 package com.example.safehostel;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,23 +29,31 @@ import com.example.safehostel.fragments.ComplaintHome;
 import com.example.safehostel.fragments.HostelRatings;
 import com.example.safehostel.fragments.MyComplaints;
 import com.example.safehostel.fragments.EditAccount;
+import com.example.safehostel.models.ProfileModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     ActivityMainBinding mainBinding;
     private DrawerLayout drawer;
-    private TextView tvEditProfile;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseUser mUser;
+    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private NavigationView navigationView;
     private String role;
+    private TextView navUsername;
+    private ListenerRegistration listener;
+    private DocumentReference reference2;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ProfileModel profileModel = new ProfileModel();
     private static final String TAG = "MainActivity";
 
     @Override
@@ -51,17 +61,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         mainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
-        SharedPreferences sharedPreferences = this.getSharedPreferences("profile",MODE_PRIVATE);
 
         checkURoles();
 
-/*        mUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (mUser!=null&&mUser.isEmailVerified()){
-            Toast.makeText(MainActivity.this,"",Toast.LENGTH_SHORT).show();
-        }else {
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            finish();
-        }*/
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,8 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
 
         View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.navHeaderName);
-        navUsername.setText(sharedPreferences.getString("user_name","Default"));
+        navUsername = (TextView) headerView.findViewById(R.id.navHeaderName);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -98,6 +99,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             new ComplaintHome()).commit();
 
             navigationView.setCheckedItem(R.id.home_frag);}
+    }
+
+    @Override
+    protected void onStart() {
+
+        reference2 = db.collection("users")
+                .document(mUser != null ? mUser.getUid() : "");
+
+        reference2.addSnapshotListener(this,new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value!=null){
+                    profileModel = value.toObject(ProfileModel.class);
+                    navUsername.setText(profileModel.getUsername()!=null?profileModel.getUsername():"Default");
+                    SharedPreferences pref = MainActivity.this.getSharedPreferences("profile", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("user_name",profileModel.getUsername());
+                    editor.putString("user_image",profileModel.getProfile_image());
+                    editor.apply();
+                }
+            }
+        });
+
+        super.onStart();
     }
 
     private void checkURoles() {
